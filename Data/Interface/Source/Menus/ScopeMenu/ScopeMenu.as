@@ -1,5 +1,8 @@
-package
+﻿package
 {
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.events.MouseEvent;
 	import Shared.AS3.BSButtonHintBar;
 	import Shared.AS3.BSButtonHintData;
 	import Shared.IMenu;
@@ -15,18 +18,18 @@ package
 
 		public function ScopeMenu()
 		{
-			trace("[ScopeMenu.as]");
-			this.HoldBreathButton = new BSButtonHintData("$Hold Breath", "Alt", "PSN_L3", "Xenon_L3", 1, null);
-			this.HoldBreathButtonForVita = new BSButtonHintData("$Hold Breath", "Alt", "_DPad_Down", "Xenon_L3", 1, null);
+			trace("[ScopeMenu.as]: "+Debug.TraceMovie(this));
+			HoldBreathButton = new BSButtonHintData("$Hold Breath", "Alt", "PSN_L3", "Xenon_L3", 1, null);
+			HoldBreathButtonForVita = new BSButtonHintData("$Hold Breath", "Alt", "_DPad_Down", "Xenon_L3", 1, null);
 			super();
 
-			addFrameScript(0, this.frame1);
-			this.HoldBreathButtonForVita.ButtonVisible = false;
+			addFrameScript(0, frame1);
+			HoldBreathButtonForVita.ButtonVisible = false;
 
 			var hints:Vector.<BSButtonHintData> = new Vector.<BSButtonHintData>();
-			hints.push(this.HoldBreathButton);
-			hints.push(this.HoldBreathButtonForVita);
-			this.ButtonHintInstance.SetButtonHintData(hints);
+			hints.push(HoldBreathButton);
+			hints.push(HoldBreathButtonForVita);
+			ButtonHintInstance.SetButtonHintData(hints);
 		}
 
 
@@ -35,37 +38,38 @@ package
 			trace("[ScopeMenu] SetIsVita(isVita="+isVita+")");
 			if (isVita)
 			{
-				this.HoldBreathButton.ButtonVisible = false;
-				this.HoldBreathButtonForVita.ButtonVisible = true;
+				HoldBreathButton.ButtonVisible = false;
+				HoldBreathButtonForVita.ButtonVisible = true;
 			}
 			else
 			{
-				this.HoldBreathButton.ButtonVisible = true;
-				this.HoldBreathButtonForVita.ButtonVisible = false;
+				HoldBreathButton.ButtonVisible = true;
+				HoldBreathButtonForVita.ButtonVisible = false;
 			}
 		}
 
 
-		public function SetOverlay(overlay:uint) : *
+		public function SetOverlay(identifier:uint) : *
 		{
-			trace("[ScopeMenu] SetOverlay(overlay="+overlay+")");
-			this.gotoAndStop(overlay + 1);
+			trace("[ScopeMenu] SetOverlay(identifier="+identifier+")");
+			gotoAndStop(identifier + 1);
 		}
 
 
-		public function SetCustom(overlay:String) : *
+		public function SetCustom(filePath:String) : *
 		{
-			trace("[ScopeMenu] SetCustom(overlay="+overlay+") OverlayLoader_mc="+OverlayLoader_mc.name);
-			this.gotoAndStop(18);
-			OverlayLoader_mc.clipScale = 1.0;
-			OverlayLoader_mc.clipAlpha = 1;
-			OverlayLoader_mc.SWFLoad(overlay);
+			gotoAndStop(18);
+			OverlayLoader_mc.Load(filePath);
+
+			Debug.TraceMovie(this);
+			trace("[ScopeMenu] SetCustom(filePath="+filePath+")");
 		}
 
 
 		function frame1() : *
 		{
 			stop();
+			trace("[ScopeMenu] frame1()::stop()");
 		}
 
 

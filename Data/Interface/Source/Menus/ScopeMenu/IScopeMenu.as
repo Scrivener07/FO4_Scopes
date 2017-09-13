@@ -2,7 +2,8 @@ package
 {
 	public interface IScopeMenu
 	{
-		function SetOverlay(overlay:uint) : *; // native
-		function SetCustom(overlay:String) : *;
+		function SetIsVita(isVita:Boolean) : *; // native
+		function SetOverlay(identifier:uint) : *; // native
+		function SetCustom(filePath:String) : *;
 	}
 }
