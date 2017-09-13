@@ -32,7 +32,6 @@
 			// You can remove an added frame script by setting the script to null.
 			// Ex: mc.addFrameScript(0, null);
 			stop();
-			trace("[SampleScope] frame1()::stop()");
 		}
 
 

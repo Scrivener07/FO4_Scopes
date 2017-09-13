@@ -35,7 +35,6 @@
 
 		public function SetIsVita(isVita:Boolean) : *
 		{
-			trace("[ScopeMenu] SetIsVita(isVita="+isVita+")");
 			if (isVita)
 			{
 				HoldBreathButton.ButtonVisible = false;
@@ -51,17 +50,15 @@
 
 		public function SetOverlay(identifier:uint) : *
 		{
-			trace("[ScopeMenu] SetOverlay(identifier="+identifier+")");
 			gotoAndStop(identifier + 1);
+			trace("[ScopeMenu] SetOverlay(identifier="+identifier+")");
 		}
 
 
 		public function SetCustom(filePath:String) : *
 		{
-			gotoAndStop(18);
+			gotoAndStop("Custom");
 			OverlayLoader_mc.Load(filePath);
-
-			Debug.TraceMovie(this);
 			trace("[ScopeMenu] SetCustom(filePath="+filePath+")");
 		}
 
@@ -69,7 +66,6 @@
 		function frame1() : *
 		{
 			stop();
-			trace("[ScopeMenu] frame1()::stop()");
 		}
 
 

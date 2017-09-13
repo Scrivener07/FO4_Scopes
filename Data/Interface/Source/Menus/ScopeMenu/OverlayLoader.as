@@ -36,7 +36,7 @@ package
 
 			if (Content)
 			{
-				Unload(Content);
+				Unload();
 			}
 
 			var urlRequest:URLRequest = new URLRequest(filePath);
@@ -46,11 +46,19 @@ package
 		}
 
 
-		public function Unload(displayObject:DisplayObject) : void
+		public function Unload() : Boolean
 		{
-			trace("[ScopeMenu:OverlayLoader] Unload");
-			removeChild(displayObject);
-			displayObject.loaderInfo.loader.unload();
+			if (Content)
+			{
+				removeChild(Content);
+				Content.loaderInfo.loader.unload();
+				return true;
+			}
+			else
+			{
+				trace("[ScopeMenu:OverlayLoader] Nothing to unload right now.");
+				return false;
+			}
 		}
 
 
@@ -67,9 +75,7 @@ package
 		{
 			Content = e.currentTarget.content;
 			addChild(Content);
-
-			Debug.TraceMovieFrom(Content, this);
-			trace("[ScopeMenu:OverlayLoader] OnLoadComplete");
+			trace("[ScopeMenu:OverlayLoader] OnLoadComplete:"+Debug.TraceMovieFrom(Content, this));
 		}
 
 
