@@ -63,6 +63,13 @@
 		}
 
 
+		public function ConvertPath(filepath:String, toExtension:String) : String
+		{
+			trace("[ScopeMenu] ConvertPath(filepath="+filepath+", toExtension="+toExtension+")");
+			return Utility.ConvertFileExtension(filepath, toExtension);
+		}
+
+
 		function frame1() : *
 		{
 			stop();

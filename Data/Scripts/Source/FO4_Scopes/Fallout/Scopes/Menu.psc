@@ -1,23 +1,16 @@
 Scriptname Fallout:Scopes:Menu extends Quest
 import Fallout
+import Fallout:Scopes:Papyrus
 
 
-; Framework
-;---------------------------------------------
-
-Scopes:Menu Function ScopeMenu() Global
-	return Game.GetFormFromFile(0x01000F99, "Scopes.esp") as Scopes:Menu
-EndFunction
-
-
-; Functions
+; Methods
 ;---------------------------------------------
 
 Function SetOverlay(int identifier)
 	var[] arguments = new var[1]
 	arguments[0] = identifier
 	UI.Invoke(Name, GetMember("SetOverlay"), arguments)
-	Debug.Notification("Scope Identifier:"+identifier)
+	WriteLine(self, "Identifier:"+identifier)
 EndFunction
 
 
@@ -25,9 +18,23 @@ Function SetCustom(string filePath)
 	var[] arguments = new var[1]
 	arguments[0] = filePath
 	UI.Invoke(Name, GetMember("SetCustom"), arguments)
-	Debug.Notification("Scope Filepath:"+filePath)
+	WriteLine(self, "Filepath:"+filePath)
 EndFunction
 
+
+
+string Function ConvertPath(string filePath, string toExtension)
+	var[] arguments = new var[2]
+	arguments[0] = filePath
+	arguments[1] = toExtension
+	string value = UI.Invoke(Name, GetMember("ConvertPath"), arguments) as string
+	WriteLine(self, "ConvertPath From["+filePath+"], To["+value+"]")
+	return value
+EndFunction
+
+
+; Functions
+;---------------------------------------------
 
 string Function GetMember(string member)
 	return Instance+"."+member
@@ -68,4 +75,8 @@ Group Identifiers
 	int Property InternalRangefinder = 14 AutoReadOnly
 	int Property Rangefinder00 = 15 AutoReadOnly
 	int Property AssaultRifle_REC = 16 AutoReadOnly
+EndGroup
+
+Group Keyboard
+	int Property HoldBreath = 164 AutoReadOnly
 EndGroup

@@ -1,5 +1,5 @@
 Scriptname Fallout:Scopes:Setup extends Quest
-
+{Temporary script to add in game items to test this project.}
 
 Event OnQuestInit()
 	Actor Player = Game.GetPlayer()
