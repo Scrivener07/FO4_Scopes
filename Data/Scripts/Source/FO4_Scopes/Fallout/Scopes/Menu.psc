@@ -10,7 +10,7 @@ Function SetOverlay(int identifier)
 	var[] arguments = new var[1]
 	arguments[0] = identifier
 	UI.Invoke(Name, GetMember("SetOverlay"), arguments)
-	WriteLine(self, "Identifier:"+identifier)
+	WriteLine(self, "SetOverlay:"+identifier)
 EndFunction
 
 
@@ -18,17 +18,23 @@ Function SetCustom(string filePath)
 	var[] arguments = new var[1]
 	arguments[0] = filePath
 	UI.Invoke(Name, GetMember("SetCustom"), arguments)
-	WriteLine(self, "Filepath:"+filePath)
+	WriteLine(self, "SetCustom:"+filePath)
 EndFunction
 
 
+string Function GetCustom()
+	string value = UI.Invoke(Name, GetMember("GetCustom"))
+	WriteLine(self, "GetCustom:"+value)
+	return value
+EndFunction
 
-string Function ConvertPath(string filePath, string toExtension)
+
+string Function PathConvert(string filePath, string toExtension)
 	var[] arguments = new var[2]
 	arguments[0] = filePath
 	arguments[1] = toExtension
-	string value = UI.Invoke(Name, GetMember("ConvertPath"), arguments) as string
-	WriteLine(self, "ConvertPath From["+filePath+"], To["+value+"]")
+	string value = UI.Invoke(Name, GetMember("PathConvert"), arguments) as string
+	WriteLine(self, "PathConvert From["+filePath+"], To["+value+"]")
 	return value
 EndFunction
 
@@ -40,6 +46,9 @@ string Function GetMember(string member)
 	return Instance+"."+member
 EndFunction
 
+string Function GetMemberCustom(string member)
+	return Custom+"."+member
+EndFunction
 
 ; Properties
 ;---------------------------------------------
@@ -53,6 +62,11 @@ Group Properties
 	string Property Instance Hidden
 		string Function Get()
 			return "root1.ScopeMenuInstance"
+		EndFunction
+	EndProperty
+	string Property Custom Hidden
+		string Function Get()
+			return GetCustom()
 		EndFunction
 	EndProperty
 EndGroup

@@ -34,7 +34,55 @@ bool Function WriteMessage(string prefix, string text) Global DebugOnly
 	If (prefix)
 		title = prefix+"\n"
 	EndIf
-
 	Debug.MessageBox(title+text)
 	return WriteLine(prefix, text)
+EndFunction
+
+
+; Debug
+;---------------------------------------------
+
+bool Function TraceKeywords(Form aForm) Global DebugOnly
+	string logPrefix = "[Papyrus.psc TraceKeywords]" const
+
+	If (aForm)
+		Keyword[] array = aForm.GetKeywords()
+		If (array)
+			int index = 0
+			While (index < array.Length)
+				WriteLine(logPrefix, aForm+" has keyword: "+array[index]+", @"+index)
+				index += 1
+			EndWhile
+			return true
+		Else
+			WriteLine(logPrefix, aForm+" has no keywords.")
+			return false
+		EndIf
+	Else
+		WriteLine(logPrefix, "Cannot trace keywords on none form.")
+		return false
+	EndIf
+EndFunction
+
+
+bool Function TracePropertyModifiers(ObjectMod aObjectMod) Global DebugOnly
+	string logPrefix = "[Papyrus.psc TracePropertyModifiers]" const
+
+	If (aObjectMod)
+		ObjectMod:PropertyModifier[] array = aObjectMod.GetPropertyModifiers()
+		If (array)
+			int index = 0
+			While (index < array.Length)
+				WriteLine(logPrefix, aObjectMod+" has PropertyModifier: "+array[index]+", @"+index)
+				index += 1
+			EndWhile
+			return true
+		Else
+			WriteLine(logPrefix, aObjectMod+" has no property modifiers.")
+			return false
+		EndIf
+	Else
+		WriteLine(logPrefix, "Cannot trace property modifiers on none ObjectMod.")
+		return false
+	EndIf
 EndFunction

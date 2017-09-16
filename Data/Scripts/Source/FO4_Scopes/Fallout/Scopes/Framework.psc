@@ -3,49 +3,57 @@ import Fallout
 import Fallout:Scopes:Menu
 import Fallout:Scopes:Papyrus
 
-Actor Player
-int WeaponIndex = 41 Const
 
-; * Weapon Attach Point == 'ap_gun_Scope' on scope mods.
-; ** Still might be an iron sight with attach point only..
+Scopes:Menu ScopeMenu
+
+Actor Player
+int BipedWeapon = 41 Const
+
 
 ; Events
 ;---------------------------------------------
 
 Event OnInit()
 	Player = Game.GetPlayer()
+	ScopeMenu = GetMenu()
+	RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
+;	RegisterForExternalEvent("Fallout_Scopes_LoadEvent", "OnLoaded")
 EndEvent
 
 
-; Functions
-;---------------------------------------------
+Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
+	If (abOpening)
+		ObjectMod[] array = Player.GetWornItemMods(BipedWeapon)
+		If (array)
+			int index = 0
+			While (index < array.Length)
+				ObjectMod omod = array[index]
+				ObjectMod:PropertyModifier[] properties = omod.GetPropertyModifiers()
 
-String Function GetModelPath()
-	ObjectMod[] array = Player.GetWornItemMods(WeaponIndex)
-	int index = 0
+				If (omod.HasWorldModel() && properties.FindStruct("object", HasScope) > -1)
+					string modelPath = omod.GetWorldModelPath()
+					string filepath = ScopeMenu.PathConvert(modelPath, "swf")
+					ScopeMenu.SetCustom(filepath)
+					return
+				EndIf
 
-	string result ; return last for now...
-	While (index < array.length)
-		ObjectMod value = array[index]
-		result = value.GetWorldModelPath()
-		WriteLine(self, "Found the object mod '"+value+"' on slot index "+WeaponIndex+" with result " +result+", @"+index)
-
-		If (index == 2) ; faking it for .44 pistol
-			return result
-		Else
-			index += 1
+				index += 1
+			EndWhile
 		EndIf
-	EndWhile
-	return result ; TODO: select the correct return result from array.
-EndFunction
+	EndIf
+EndEvent
 
 
-bool Function HasScope(Weapon akWeapon)
-	return akWeapon.HasKeyword(HasScope)
-EndFunction
+; Function OnLoaded(bool success, string filepath)
+; 	If (success)
+; 		WriteNotification(self, "Loaded: "+filepath)
+; 	Else
+; 		WriteNotification(self, "No custom overlay was found.")
+; 	EndIf
+; EndFunction
 
 
-; Framework
+; Globals
 ;---------------------------------------------
 
 Scopes:Framework Function GetFramework() Global
@@ -63,5 +71,4 @@ EndFunction
 
 Group Properties
 	Keyword Property HasScope Auto Const Mandatory
-	Keyword Property Fallout_Scopes_Keyword Auto Const Mandatory
 EndGroup

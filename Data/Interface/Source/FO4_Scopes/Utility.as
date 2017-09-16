@@ -1,11 +1,26 @@
 package
 {
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+
 	public class Utility
 	{
 
-		public static function ConvertFileExtension(filepath:String, toExtension:String):String
+		public static function WalkMovie(movieClip:MovieClip) : String
 		{
-			return filepath.substr(0, filepath.length - 3) + toExtension;
+			return WalkMovieFrom(movieClip, movieClip);
+		}
+
+
+		public static function WalkMovieFrom(from:DisplayObject, to:MovieClip) : String
+		{
+			var path:String = from.name;
+			while (from != to.root)
+			{
+				from = from.parent;
+				path = from.name+"."+path;
+			};
+			return "stage."+path;
 		}
 
 	}
