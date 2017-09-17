@@ -12,8 +12,12 @@ Scopes:Menu ScopeMenu
 
 Event OnInit()
 	Player = Game.GetPlayer()
-	ScopeMenu = GetMenu()
-	RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
+	TryFramework()
+EndEvent
+
+
+Event Actor.OnPlayerLoadGame(Actor akSender)
+	TryFramework()
 EndEvent
 
 
@@ -38,6 +42,24 @@ Event OnKeyUp(int keyCode, float time)
 	UI.Invoke(ScopeMenu.Name, ScopeMenu.GetMemberCustom("Unsteady"))
 	WriteLine(self, "Unsteady")
 EndEvent
+
+
+; Properties
+;---------------------------------------------
+
+bool Function TryFramework()
+	ScopeMenu = GetMenu()
+	If (ScopeMenu)
+		UnregisterForRemoteEvent(Player, "OnPlayerLoadGame")
+		RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
+		WriteLine(self, "Initialized")
+		return true
+	Else
+		RegisterForRemoteEvent(Player, "OnPlayerLoadGame")
+		WriteLine(self, "Scope framework is not installed.")
+		return false
+	EndIf
+EndFunction
 
 
 ; Properties
