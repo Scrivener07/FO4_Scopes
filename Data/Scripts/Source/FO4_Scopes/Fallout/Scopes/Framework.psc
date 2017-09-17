@@ -17,7 +17,6 @@ Event OnInit()
 	Player = Game.GetPlayer()
 	ScopeMenu = GetMenu()
 	RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
-;	RegisterForExternalEvent("Fallout_Scopes_LoadEvent", "OnLoaded")
 EndEvent
 
 
@@ -42,15 +41,6 @@ Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
 		EndIf
 	EndIf
 EndEvent
-
-
-; Function OnLoaded(bool success, string filepath)
-; 	If (success)
-; 		WriteNotification(self, "Loaded: "+filepath)
-; 	Else
-; 		WriteNotification(self, "No custom overlay was found.")
-; 	EndIf
-; EndFunction
 
 
 ; Globals

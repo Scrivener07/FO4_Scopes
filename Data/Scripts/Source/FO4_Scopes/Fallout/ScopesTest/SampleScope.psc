@@ -18,7 +18,7 @@ EndEvent
 
 
 Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
-	If (Player.GetEquippedWeapon() == WeaponType)
+	If (Player.GetEquippedWeapon() == Revolver44)
 		If (abOpening)
 			RegisterForKey(ScopeMenu.HoldBreath)
 		Else
@@ -44,6 +44,6 @@ EndEvent
 ;---------------------------------------------
 
 Group Properties
-	Weapon Property WeaponType Auto Const Mandatory
+	Weapon Property Revolver44 Auto Const Mandatory
 	{A .44 caliber revolver.}
 EndGroup

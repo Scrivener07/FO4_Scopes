@@ -72,21 +72,13 @@ package
 			Content = e.currentTarget.content;
 			addChild(Content);
 			this.visible = true;
-		//	SendLoadEvent(true, FilePath);
 		}
 
 
 		private function OnLoadError(e:IOErrorEvent) : void
 		{
 			this.visible = false;
-		//	SendLoadEvent(false, FilePath);
 		}
-
-
-	//	private function SendLoadEvent(success:Boolean, filepath:String) : void
-	//	{
-	//		stage.getChildAt(0).f4se.SendExternalEvent("Fallout_Scopes_LoadEvent", success, filepath);
-	//	}
 
 
 	}
