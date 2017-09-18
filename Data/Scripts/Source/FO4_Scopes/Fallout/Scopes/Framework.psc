@@ -1,6 +1,5 @@
 Scriptname Fallout:Scopes:Framework extends Quest
 import Fallout
-import Fallout:Scopes:Menu
 import Fallout:Scopes:Papyrus
 
 
@@ -15,7 +14,7 @@ int BipedWeapon = 41 Const
 
 Event OnInit()
 	Player = Game.GetPlayer()
-	ScopeMenu = GetMenu()
+	ScopeMenu = ScopeMenu()
 	RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
 EndEvent
 
@@ -46,12 +45,7 @@ EndEvent
 ; Globals
 ;---------------------------------------------
 
-Scopes:Framework Function GetFramework() Global
-	return Game.GetFormFromFile(0x01000F99, "Scopes.esp") as Scopes:Framework
-EndFunction
-
-
-Scopes:Menu Function GetMenu() Global
+Scopes:Menu Function ScopeMenu() Global
 	return Game.GetFormFromFile(0x01000F99, "Scopes.esp") as Scopes:Menu
 EndFunction
 
@@ -61,4 +55,5 @@ EndFunction
 
 Group Properties
 	Keyword Property HasScope Auto Const Mandatory
+	{The keyword an OMOD must add via its property modifiers.}
 EndGroup

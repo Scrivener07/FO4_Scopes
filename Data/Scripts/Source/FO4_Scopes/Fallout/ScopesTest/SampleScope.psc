@@ -44,11 +44,11 @@ Event OnKeyUp(int keyCode, float time)
 EndEvent
 
 
-; Properties
+; Functions
 ;---------------------------------------------
 
 bool Function TryFramework()
-	ScopeMenu = GetMenu()
+	ScopeMenu = ScopeMenu()
 	If (ScopeMenu)
 		UnregisterForRemoteEvent(Player, "OnPlayerLoadGame")
 		RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
