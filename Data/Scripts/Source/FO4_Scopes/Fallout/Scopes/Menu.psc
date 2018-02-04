@@ -7,35 +7,46 @@ import Fallout:Scopes:Papyrus
 ;---------------------------------------------
 
 Function SetOverlay(int identifier)
-	var[] arguments = new var[1]
-	arguments[0] = identifier
-	UI.Invoke(Name, GetMember("SetOverlay"), arguments)
-	WriteLine(self, "SetOverlay:"+identifier)
+	If (identifier >= 0 && identifier <= 16)
+		var[] arguments = new var[1]
+		arguments[0] = identifier
+		UI.Invoke(Name, GetMember("SetOverlay"), arguments)
+		WriteLine(self, "SetOverlay:"+identifier)
+	Else
+		WriteLine(self, "SetOverlay: Argument "+identifier+" is out of range.")
+	EndIf
 EndFunction
 
 
 Function SetCustom(string filePath)
-	var[] arguments = new var[1]
-	arguments[0] = filePath
-	UI.Invoke(Name, GetMember("SetCustom"), arguments)
-	WriteLine(self, "SetCustom:"+filePath)
-EndFunction
-
-
-string Function GetCustom()
-	string value = UI.Invoke(Name, GetMember("GetCustom"))
-	WriteLine(self, "GetCustom:"+value)
-	return value
+	If (filePath)
+		var[] arguments = new var[1]
+		arguments[0] = filePath
+		UI.Invoke(Name, GetMember("SetCustom"), arguments)
+		WriteLine(self, "SetCustom:"+filePath)
+	Else
+		WriteLine(self, "SetCustom: Argument filePath cannot be none or empty.")
+	EndIf
 EndFunction
 
 
 string Function PathConvert(string filePath, string toExtension)
-	var[] arguments = new var[2]
-	arguments[0] = filePath
-	arguments[1] = toExtension
-	string value = UI.Invoke(Name, GetMember("PathConvert"), arguments) as string
-	WriteLine(self, "PathConvert From["+filePath+"], To["+value+"]")
-	return value
+	If (filePath)
+		If (toExtension)
+			var[] arguments = new var[2]
+			arguments[0] = filePath
+			arguments[1] = toExtension
+			string value = UI.Invoke(Name, GetMember("PathConvert"), arguments)
+			WriteLine(self, "PathConvert From"+arguments+", To["+value+"]")
+			return value
+		Else
+			WriteLine(self, "PathConvert: Argument toExtension cannot be none or empty.")
+			return none
+		EndIf
+	Else
+		WriteLine(self, "PathConvert: Argument filePath cannot be none or empty.")
+		return none
+	EndIf
 EndFunction
 
 
@@ -43,12 +54,30 @@ EndFunction
 ;---------------------------------------------
 
 string Function GetMember(string member)
-	return Instance+"."+member
+	If (member)
+		return Instance+"."+member
+	Else
+		WriteLine(self, "GetMember: Argument member cannot be none or empty.")
+		return none
+	EndIf
 EndFunction
 
+
 string Function GetMemberCustom(string member)
-	return Custom+"."+member
+	If (member)
+		string custom = UI.Invoke(Name, GetMember("GetCustom"))
+		If (custom)
+			return custom+"."+member
+		Else
+			WriteLine(self, "GetMemberCustom: Could not get an instance for the "+member+" member.")
+			return none
+		EndIf
+	Else
+		WriteLine(self, "GetMemberCustom: Argument member cannot be none or empty.")
+		return none
+	EndIf
 EndFunction
+
 
 ; Properties
 ;---------------------------------------------
@@ -62,11 +91,6 @@ Group Properties
 	string Property Instance Hidden
 		string Function Get()
 			return "root1.ScopeMenuInstance"
-		EndFunction
-	EndProperty
-	string Property Custom Hidden
-		string Function Get()
-			return GetCustom()
 		EndFunction
 	EndProperty
 EndGroup
