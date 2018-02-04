@@ -32,6 +32,7 @@
 			hints.push(HoldBreathButton);
 			hints.push(HoldBreathButtonForVita);
 			ButtonHintInstance.SetButtonHintData(hints);
+			Debug.Log("ScopeMenu", "Constructor", "Constructed the scope menu.");
 		}
 
 
@@ -50,6 +51,7 @@
 				HoldBreathButton.ButtonVisible = true;
 				HoldBreathButtonForVita.ButtonVisible = false;
 			}
+			Debug.Log("ScopeMenu", "SetIsVita", "The argument isVita equals "+isVita);
 		}
 
 
@@ -57,7 +59,7 @@
 		{
 			OverlayFrame = identifier + 1;
 			gotoAndStop(OverlayFrame);
-			trace("[ScopeMenu] SetOverlay(identifier="+identifier+")");
+			Debug.Log("ScopeMenu", "SetOverlay", "The overlay identifier is being set to "+identifier);
 		}
 
 
@@ -66,20 +68,22 @@
 			OverlayLoader_mc.Info.addEventListener(Event.COMPLETE, this.OnLoadComplete);
 			OverlayLoader_mc.Info.addEventListener(IOErrorEvent.IO_ERROR, this.OnLoadError);
 			OverlayLoader_mc.Load(filePath);
-			trace("[ScopeMenu] SetCustom(filePath="+filePath+")");
+			Debug.Log("ScopeMenu", "SetCustom", "Setting the custom overlay file path to '"+filePath+"'.");
 		}
 
 
 		public function GetCustom() : String
 		{
+			Debug.Log("ScopeMenu", "GetCustom", "Instance equals '"+OverlayLoader_mc.Instance+"'.");
 			return OverlayLoader_mc.Instance;
 		}
 
 
 		public function PathConvert(filepath:String, toExtension:String) : String
 		{
-			trace("[ScopeMenu] PathConvert(filepath="+filepath+", toExtension="+toExtension+")");
-			return Path.ConvertFileExtension(filepath, toExtension);
+			var converted = Path.ConvertFileExtension(filepath, toExtension);
+			Debug.Log("ScopeMenu", "PathConvert", "Converting file path '"+filepath+"' to '"+toExtension+"' extension as '"+converted+"'.");
+			return converted;
 		}
 
 
@@ -91,7 +95,7 @@
 			OverlayLoader_mc.Info.removeEventListener(Event.COMPLETE, this.OnLoadComplete);
 			OverlayLoader_mc.Info.removeEventListener(IOErrorEvent.IO_ERROR, this.OnLoadError);
 			gotoAndStop("Custom");
-			trace("[ScopeMenu] OnLoadComplete: "+OverlayLoader_mc.FilePath+", Instance: "+OverlayLoader_mc.Instance);
+			Debug.Log("ScopeMenu", "OnLoadComplete", "Override found at '"+OverlayLoader_mc.FilePath+"' with instance of '"+OverlayLoader_mc.Instance+"'.");
 		}
 
 
@@ -100,7 +104,7 @@
 			OverlayLoader_mc.Info.removeEventListener(Event.COMPLETE, this.OnLoadComplete);
 			OverlayLoader_mc.Info.removeEventListener(IOErrorEvent.IO_ERROR, this.OnLoadError);
 			gotoAndStop(OverlayFrame);
-			trace("[ScopeMenu] OnLoadError: No override found at '"+OverlayLoader_mc.FilePath+"'.");
+			Debug.Log("ScopeMenu", "OnLoadError", "No override found at '"+OverlayLoader_mc.FilePath+"'. Moving to frame "+OverlayFrame);
 		}
 
 

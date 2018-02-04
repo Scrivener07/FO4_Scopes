@@ -8,14 +8,14 @@
 		public function Scope()
 		{
 			super();
-			trace("[Scope]: "+Utility.WalkMovie(this));
+			trace("[Custom Scope]: "+Utility.WalkMovie(this));
 		}
 
 
 		public function Steady() : *
 		{
 			addFrameScript(0, frame1);
-			trace("[Scope] Steady()");
+			trace("[Custom Scope] Steady()");
 		}
 
 
@@ -23,7 +23,7 @@
 		{
 			addFrameScript(0, null);
 			play();
-			trace("[Scope] Unsteady()");
+			trace("[Custom Scope] Unsteady()");
 		}
 
 

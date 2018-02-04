@@ -39,7 +39,9 @@ EndEvent
 
 Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
 	If (abOpening)
-		ScopeMenu.SetCustom(FilePath)
+		; TODO: Convert the path here instead of when the menu is NOT opened.
+		string overlay = ScopeMenu.PathConvert(FilePath, "swf")
+		ScopeMenu.SetCustom(overlay)
 	EndIf
 EndEvent
 
@@ -55,8 +57,7 @@ string Function GetFilePath()
 			ObjectMod omod = array[index]
 			ObjectMod:PropertyModifier[] properties = omod.GetPropertyModifiers()
 			If (omod.HasWorldModel() && properties.FindStruct("object", HasScope) > -1)
-				string modelPath = omod.GetWorldModelPath()
-				return ScopeMenu.PathConvert(modelPath, "swf")
+				return omod.GetWorldModelPath()
 			EndIf
 			index += 1
 		EndWhile

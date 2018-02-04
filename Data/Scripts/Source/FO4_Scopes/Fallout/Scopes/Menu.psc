@@ -36,8 +36,11 @@ string Function PathConvert(string filePath, string toExtension)
 			var[] arguments = new var[2]
 			arguments[0] = filePath
 			arguments[1] = toExtension
-			string value = UI.Invoke(Name, GetMember("PathConvert"), arguments)
-			WriteLine(self, "PathConvert From"+arguments+", To["+value+"]")
+
+			string member = GetMember("PathConvert")
+			string value = UI.Invoke(Name, member, arguments)
+
+			WriteLine(self, "PathConvert From"+arguments+", To["+value+"] Member:"+member)
 			return value
 		Else
 			WriteLine(self, "PathConvert: Argument toExtension cannot be none or empty.")
