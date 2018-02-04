@@ -26,9 +26,8 @@
 			HoldBreathButton = new BSButtonHintData("$Hold Breath", "Alt", "PSN_L3", "Xenon_L3", 1, null);
 			HoldBreathButtonForVita = new BSButtonHintData("$Hold Breath", "Alt", "_DPad_Down", "Xenon_L3", 1, null);
 			super();
-
+			addFrameScript(0, this.frame1);
 			HoldBreathButtonForVita.ButtonVisible = false;
-
 			var hints:Vector.<BSButtonHintData> = new Vector.<BSButtonHintData>();
 			hints.push(HoldBreathButton);
 			hints.push(HoldBreathButtonForVita);
@@ -102,6 +101,15 @@
 			OverlayLoader_mc.Info.removeEventListener(IOErrorEvent.IO_ERROR, this.OnLoadError);
 			gotoAndStop(OverlayFrame);
 			trace("[ScopeMenu] OnLoadError: No override found at '"+OverlayLoader_mc.FilePath+"'.");
+		}
+
+
+		// Frames
+		//---------------------------------------------
+
+		function frame1() : *
+		{
+			stop();
 		}
 
 
