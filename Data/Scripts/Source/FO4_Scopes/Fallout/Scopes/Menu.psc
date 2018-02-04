@@ -3,17 +3,80 @@ import Fallout
 import Fallout:Scopes:Papyrus
 
 
+Actor Player
+string ModelPath
+
+int BipedWeapon = 41 Const
+
+
+; Events
+;---------------------------------------------
+
+Event OnInit()
+	Player = Game.GetPlayer()
+	RegisterForRemoteEvent(Player, "OnItemEquipped")
+	RegisterForRemoteEvent(Player, "OnPlayerModArmorWeapon")
+	RegisterForMenuOpenCloseEvent(Name)
+EndEvent
+
+
+Event Actor.OnItemEquipped(Actor akSender, Form akBaseObject, ObjectReference akReference)
+	If (akBaseObject is Weapon)
+		ModelPath = GetModelPath()
+	EndIf
+EndEvent
+
+
+Event Actor.OnPlayerModArmorWeapon(Actor akSender, Form akBaseObject, ObjectMod akModBaseObject)
+	If (akBaseObject is Weapon)
+		ModelPath = GetModelPath()
+	EndIf
+EndEvent
+
+
+Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
+	If (abOpening)
+		string overlay = ConvertFileExtension(ModelPath, "swf")
+		WriteLine(self, "OnMenuOpenCloseEvent: The converted overlay path is "+overlay)
+		SetCustom(overlay)
+	EndIf
+EndEvent
+
+
 ; Methods
 ;---------------------------------------------
 
-Function SetOverlay(int identifier)
-	If (identifier >= 0 && identifier <= 16)
-		var[] arguments = new var[1]
-		arguments[0] = identifier
-		UI.Invoke(Name, GetMember("SetOverlay"), arguments)
-		WriteLine(self, "SetOverlay:"+identifier)
+string Function GetModelPath()
+	ObjectMod[] array = Player.GetWornItemMods(BipedWeapon)
+	If (array)
+		int index = 0
+		While (index < array.Length)
+			ObjectMod omod = array[index]
+			ObjectMod:PropertyModifier[] properties = omod.GetPropertyModifiers()
+			If (omod.HasWorldModel() && properties.FindStruct("object", HasScope) > -1)
+				return omod.GetWorldModelPath()
+			EndIf
+			index += 1
+		EndWhile
+		return none
+	EndIf
+EndFunction
+
+
+string Function ConvertFileExtension(string filePath, string toExtension)
+	If (filePath)
+		If (toExtension)
+			var[] arguments = new var[2]
+			arguments[0] = filePath
+			arguments[1] = toExtension
+			return UI.Invoke(Name, GetMember("ConvertFileExtension"), arguments)
+		Else
+			WriteLine(self, "ConvertFileExtension: Argument toExtension cannot be none or empty.")
+			return none
+		EndIf
 	Else
-		WriteLine(self, "SetOverlay: Argument "+identifier+" is out of range.")
+		WriteLine(self, "ConvertFileExtension: Argument filePath cannot be none or empty.")
+		return none
 	EndIf
 EndFunction
 
@@ -30,25 +93,14 @@ Function SetCustom(string filePath)
 EndFunction
 
 
-string Function PathConvert(string filePath, string toExtension)
-	If (filePath)
-		If (toExtension)
-			var[] arguments = new var[2]
-			arguments[0] = filePath
-			arguments[1] = toExtension
-
-			string member = GetMember("PathConvert")
-			string value = UI.Invoke(Name, member, arguments)
-
-			WriteLine(self, "PathConvert From"+arguments+", To["+value+"] Member:"+member)
-			return value
-		Else
-			WriteLine(self, "PathConvert: Argument toExtension cannot be none or empty.")
-			return none
-		EndIf
+Function SetOverlay(int identifier)
+	If (identifier >= 0 && identifier <= 16)
+		var[] arguments = new var[1]
+		arguments[0] = identifier
+		UI.Invoke(Name, GetMember("SetOverlay"), arguments)
+		WriteLine(self, "SetOverlay:"+identifier)
 	Else
-		WriteLine(self, "PathConvert: Argument filePath cannot be none or empty.")
-		return none
+		WriteLine(self, "SetOverlay: Argument "+identifier+" is out of range.")
 	EndIf
 EndFunction
 
@@ -79,6 +131,14 @@ string Function GetMemberCustom(string member)
 		WriteLine(self, "GetMemberCustom: Argument member cannot be none or empty.")
 		return none
 	EndIf
+EndFunction
+
+
+; Globals
+;---------------------------------------------
+
+Scopes:Menu Function ScopeMenu() Global
+	return Game.GetFormFromFile(0x01000F99, "Scopes.esp") as Scopes:Menu
 EndFunction
 
 
@@ -123,4 +183,9 @@ EndGroup
 
 Group Keyboard
 	int Property HoldBreath = 164 AutoReadOnly
+EndGroup
+
+Group Keywords
+	Keyword Property HasScope Auto Const Mandatory
+	{The keyword an OMOD must add via its property modifiers.}
 EndGroup

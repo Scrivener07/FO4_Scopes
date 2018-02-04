@@ -1,6 +1,6 @@
 Scriptname Fallout:ScopesTest:SampleScope extends Quest Default
 import Fallout
-import Fallout:Scopes:Framework
+import Fallout:Scopes:Menu
 import Fallout:Scopes:Papyrus
 
 Actor Player
@@ -12,13 +12,26 @@ Scopes:Menu ScopeMenu
 
 Event OnInit()
 	Player = Game.GetPlayer()
-	TryFramework()
+	OnGameReload()
 EndEvent
 
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
-	TryFramework()
+	OnGameReload()
 EndEvent
+
+
+Function OnGameReload()
+	ScopeMenu = ScopeMenu()
+	If (ScopeMenu)
+		UnregisterForRemoteEvent(Player, "OnPlayerLoadGame")
+		RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
+		WriteLine(self, "Initialized")
+	Else
+		RegisterForRemoteEvent(Player, "OnPlayerLoadGame")
+		WriteLine(self, "Scope framework is not installed.")
+	EndIf
+EndFunction
 
 
 Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
@@ -42,24 +55,6 @@ Event OnKeyUp(int keyCode, float time)
 	UI.Invoke(ScopeMenu.Name, ScopeMenu.GetMemberCustom("Unsteady"))
 	WriteLine(self, "Unsteady")
 EndEvent
-
-
-; Functions
-;---------------------------------------------
-
-bool Function TryFramework()
-	ScopeMenu = ScopeMenu()
-	If (ScopeMenu)
-		UnregisterForRemoteEvent(Player, "OnPlayerLoadGame")
-		RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
-		WriteLine(self, "Initialized")
-		return true
-	Else
-		RegisterForRemoteEvent(Player, "OnPlayerLoadGame")
-		WriteLine(self, "Scope framework is not installed.")
-		return false
-	EndIf
-EndFunction
 
 
 ; Properties
