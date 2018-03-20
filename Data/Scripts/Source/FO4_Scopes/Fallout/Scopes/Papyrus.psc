@@ -1,7 +1,6 @@
 ScriptName Fallout:Scopes:Papyrus Const Native Hidden
 {Extensions for scripting with Papyrus in general.}
 
-
 ; Logging
 ;---------------------------------------------
 
