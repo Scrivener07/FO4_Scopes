@@ -3,39 +3,105 @@ import Fallout
 import Fallout:Scopes:Papyrus
 
 
+Actor Player
+string ModelPath
+
+int BipedWeapon = 41 Const
+
+
+; Events
+;---------------------------------------------
+
+Event OnInit()
+	Player = Game.GetPlayer()
+	RegisterForRemoteEvent(Player, "OnItemEquipped")
+	RegisterForRemoteEvent(Player, "OnPlayerModArmorWeapon")
+	RegisterForMenuOpenCloseEvent(Name)
+EndEvent
+
+
+Event Actor.OnItemEquipped(Actor akSender, Form akBaseObject, ObjectReference akReference)
+	If (akBaseObject is Weapon)
+		ModelPath = GetModelPath()
+	EndIf
+EndEvent
+
+
+Event Actor.OnPlayerModArmorWeapon(Actor akSender, Form akBaseObject, ObjectMod akModBaseObject)
+	If (akBaseObject is Weapon)
+		ModelPath = GetModelPath()
+	EndIf
+EndEvent
+
+
+Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
+	If (abOpening)
+		string overlay = ConvertFileExtension(ModelPath, "swf")
+		WriteLine(self, "OnMenuOpenCloseEvent: The converted overlay path is "+overlay)
+		SetCustom(overlay)
+	EndIf
+EndEvent
+
+
 ; Methods
 ;---------------------------------------------
 
-Function SetOverlay(int identifier)
-	var[] arguments = new var[1]
-	arguments[0] = identifier
-	UI.Invoke(Name, GetMember("SetOverlay"), arguments)
-	WriteLine(self, "SetOverlay:"+identifier)
+string Function GetModelPath()
+	ObjectMod[] array = Player.GetWornItemMods(BipedWeapon)
+	If (array)
+		int index = 0
+		While (index < array.Length)
+			ObjectMod omod = array[index]
+			ObjectMod:PropertyModifier[] properties = omod.GetPropertyModifiers()
+			If (omod.HasWorldModel() && properties.FindStruct("object", HasScope) > -1)
+				return omod.GetWorldModelPath()
+			EndIf
+			index += 1
+		EndWhile
+		return none
+	EndIf
+EndFunction
+
+
+string Function ConvertFileExtension(string filePath, string toExtension)
+	If (filePath)
+		If (toExtension)
+			var[] arguments = new var[2]
+			arguments[0] = filePath
+			arguments[1] = toExtension
+			return UI.Invoke(Name, GetMember("ConvertFileExtension"), arguments)
+		Else
+			WriteLine(self, "ConvertFileExtension: Argument toExtension cannot be none or empty.")
+			return none
+		EndIf
+	Else
+		WriteLine(self, "ConvertFileExtension: Argument filePath cannot be none or empty.")
+		return none
+	EndIf
 EndFunction
 
 
 Function SetCustom(string filePath)
-	var[] arguments = new var[1]
-	arguments[0] = filePath
-	UI.Invoke(Name, GetMember("SetCustom"), arguments)
-	WriteLine(self, "SetCustom:"+filePath)
+	If (filePath)
+		var[] arguments = new var[1]
+		arguments[0] = filePath
+		UI.Invoke(Name, GetMember("SetCustom"), arguments)
+		WriteLine(self, "SetCustom:"+filePath)
+	Else
+		WriteLine(self, "SetCustom: Argument filePath cannot be none or empty.")
+	EndIf
 EndFunction
 
 
-string Function GetCustom()
-	string value = UI.Invoke(Name, GetMember("GetCustom"))
-	WriteLine(self, "GetCustom:"+value)
-	return value
-EndFunction
-
-
-string Function PathConvert(string filePath, string toExtension)
-	var[] arguments = new var[2]
-	arguments[0] = filePath
-	arguments[1] = toExtension
-	string value = UI.Invoke(Name, GetMember("PathConvert"), arguments) as string
-	WriteLine(self, "PathConvert From["+filePath+"], To["+value+"]")
-	return value
+Function SetOverlay(int identifier)
+	If (identifier >= 0 && identifier <= 16)
+		var[] arguments = new var[1]
+		arguments[0] = identifier
+		UI.Invoke(Name, GetMember("SetOverlay"), arguments)
+		WriteLine(self, "SetOverlay:"+identifier)
+	Else
+		WriteLine(self, "SetOverlay: Argument "+identifier+" is out of range.")
+	EndIf
 EndFunction
 
 
@@ -43,12 +109,38 @@ EndFunction
 ;---------------------------------------------
 
 string Function GetMember(string member)
-	return Instance+"."+member
+	If (member)
+		return Instance+"."+member
+	Else
+		WriteLine(self, "GetMember: Argument member cannot be none or empty.")
+		return none
+	EndIf
 EndFunction
 
+
 string Function GetMemberCustom(string member)
-	return Custom+"."+member
+	If (member)
+		string custom = UI.Invoke(Name, GetMember("GetCustom"))
+		If (custom)
+			return custom+"."+member
+		Else
+			WriteLine(self, "GetMemberCustom: Could not get an instance for the "+member+" member.")
+			return none
+		EndIf
+	Else
+		WriteLine(self, "GetMemberCustom: Argument member cannot be none or empty.")
+		return none
+	EndIf
 EndFunction
+
+
+; Globals
+;---------------------------------------------
+
+Scopes:Menu Function ScopeMenu() Global
+	return Game.GetFormFromFile(0x01000F99, "Scopes.esp") as Scopes:Menu
+EndFunction
+
 
 ; Properties
 ;---------------------------------------------
@@ -62,11 +154,6 @@ Group Properties
 	string Property Instance Hidden
 		string Function Get()
 			return "root1.ScopeMenuInstance"
-		EndFunction
-	EndProperty
-	string Property Custom Hidden
-		string Function Get()
-			return GetCustom()
 		EndFunction
 	EndProperty
 EndGroup
@@ -89,8 +176,16 @@ Group Identifiers
 	int Property InternalRangefinder = 14 AutoReadOnly
 	int Property Rangefinder00 = 15 AutoReadOnly
 	int Property AssaultRifle_REC = 16 AutoReadOnly
+	int Property GaussRiflePrototypeA = 17 AutoReadOnly
+	int Property GaussRiflePrototypeB = 18 AutoReadOnly
+	int Property Empty = 19 AutoReadOnly
 EndGroup
 
 Group Keyboard
 	int Property HoldBreath = 164 AutoReadOnly
+EndGroup
+
+Group Keywords
+	Keyword Property HasScope Auto Const Mandatory
+	{The keyword an OMOD must add via its property modifiers.}
 EndGroup

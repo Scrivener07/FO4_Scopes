@@ -2,13 +2,13 @@ package ScopeMenu_fla
 {
 	import flash.display.MovieClip;
 	
-	public dynamic class BSButtonHint_IconHolder_29 extends MovieClip
+	public dynamic class BSButtonHint_IconHolder_56 extends MovieClip
 	{
 		 
 		
 		public var IconAnimInstance:MovieClip;
 		
-		public function BSButtonHint_IconHolder_29()
+		public function BSButtonHint_IconHolder_56()
 		{
 			super();
 			addFrameScript(0,this.frame1,59,this.frame60);
