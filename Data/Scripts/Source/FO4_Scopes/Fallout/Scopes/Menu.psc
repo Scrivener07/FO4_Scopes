@@ -5,7 +5,6 @@ import Fallout:Scopes:Papyrus
 
 Actor Player
 string ModelPath
-
 int BipedWeapon = 41 Const
 
 
@@ -94,7 +93,7 @@ EndFunction
 
 
 Function SetOverlay(int identifier)
-	If (identifier >= 0 && identifier <= 16)
+	If (identifier >= Default && identifier <= Empty)
 		var[] arguments = new var[1]
 		arguments[0] = identifier
 		UI.Invoke(Name, GetMember("SetOverlay"), arguments)
