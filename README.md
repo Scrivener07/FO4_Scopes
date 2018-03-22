@@ -1,4 +1,6 @@
-# Fallout 4 Scopes
+
+![Fallout 4 Scopes Framework](Documents/Nexus.jpg)
+# Fallout 4 Scopes Framework
 A Fallout 4 framework for loading custom scopes and optics.
 Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuza2JnbikUS18Q) for work in progress footage.
 
