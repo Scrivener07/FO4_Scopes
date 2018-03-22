@@ -1,4 +1,4 @@
-Scriptname Fallout:ScopesTest::SampleScope extends Quest
+Scriptname Fallout:ScopesTest:SampleScope extends Quest
 import Fallout
 import Fallout:Scopes:Menu
 import Fallout:Scopes:Papyrus
@@ -53,10 +53,9 @@ Event Fallout:Scopes:Menu.BreathEvent(Scopes:Menu sender, var[] arguments)
 		Else
 			WriteLine(self, "Fallout:Scopes:Menu.BreathEvent : e.Breath : Unhandled Arguments "+e.Breath)
 		EndIf
-	Else
-		WriteLine(self, "Fallout:Scopes:Menu.BreathEvent : Event arguments are none.")
 	EndIf
 EndEvent
+
 
 ; Properties
 ;---------------------------------------------

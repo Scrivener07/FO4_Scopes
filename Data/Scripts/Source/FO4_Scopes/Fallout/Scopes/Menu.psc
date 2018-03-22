@@ -10,7 +10,7 @@ string ModelPath
 bool BreathPressed = false
 bool Interrupted = false
 
-int BipedWeapon = 41 Const
+int BipedWeapon = 41 const
 
 
 ; Events
@@ -71,7 +71,6 @@ EndEvent
 
 Event OnKeyUp(int keyCode, float time)
 	BreathPressed = false
-
 	If (Interrupted)
 		Interrupted = false
 	Else
