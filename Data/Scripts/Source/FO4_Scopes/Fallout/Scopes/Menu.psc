@@ -2,16 +2,21 @@ Scriptname Fallout:Scopes:Menu extends Quest
 import Fallout
 import Fallout:Scopes:Papyrus
 
+CustomEvent OpenCloseEvent
+CustomEvent BreathEvent
 
 Actor Player
 string ModelPath
+bool BreathPressed = false
+bool Interrupted = false
+
 int BipedWeapon = 41 Const
 
 
 ; Events
 ;---------------------------------------------
 
-Event OnInit()
+Event OnQuestInit()
 	Player = Game.GetPlayer()
 	RegisterForRemoteEvent(Player, "OnItemEquipped")
 	RegisterForRemoteEvent(Player, "OnPlayerModArmorWeapon")
@@ -19,25 +24,60 @@ Event OnInit()
 EndEvent
 
 
-Event Actor.OnItemEquipped(Actor akSender, Form akBaseObject, ObjectReference akReference)
+Event OnQuestShutdown()
+	UnregisterForAllEvents()
+EndEvent
+
+
+Event Actor.OnItemEquipped(Actor sender, Form akBaseObject, ObjectReference akReference)
 	If (akBaseObject is Weapon)
 		ModelPath = GetModelPath()
 	EndIf
 EndEvent
 
 
-Event Actor.OnPlayerModArmorWeapon(Actor akSender, Form akBaseObject, ObjectMod akModBaseObject)
+Event Actor.OnPlayerModArmorWeapon(Actor sender, Form akBaseObject, ObjectMod akModBaseObject)
 	If (akBaseObject is Weapon)
 		ModelPath = GetModelPath()
 	EndIf
 EndEvent
 
 
-Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
-	If (abOpening)
+Event OnMenuOpenCloseEvent(string menuName, bool opening)
+	BreathPressed = false
+
+	If (opening)
 		string overlay = ConvertFileExtension(ModelPath, "swf")
 		WriteLine(self, "OnMenuOpenCloseEvent: The converted overlay path is "+overlay)
 		SetCustom(overlay)
+		RegisterForKey(BreathKey)
+	Else
+		UnregisterForKey(BreathKey)
+	EndIf
+
+	OpenCloseEventArgs e = new OpenCloseEventArgs
+	e.Opening = opening
+	self.SendOpenCloseEvent(e)
+EndEvent
+
+
+Event OnKeyDown(int keyCode)
+	BreathPressed = true
+	BreathEventArgs e = new BreathEventArgs
+	e.Breath = BreathHeld
+	self.SendBreathEvent(e)
+EndEvent
+
+
+Event OnKeyUp(int keyCode, float time)
+	BreathPressed = false
+
+	If (Interrupted)
+		Interrupted = false
+	Else
+		BreathEventArgs e = new BreathEventArgs
+		e.Breath = BreathReleased
+		self.SendBreathEvent(e)
 	EndIf
 EndEvent
 
@@ -52,7 +92,7 @@ string Function GetModelPath()
 		While (index < array.Length)
 			ObjectMod omod = array[index]
 			ObjectMod:PropertyModifier[] properties = omod.GetPropertyModifiers()
-			If (omod.HasWorldModel() && properties.FindStruct("object", HasScope) > -1)
+			If (omod.HasWorldModel() && properties.FindStruct("object", HasScope) > Invalid)
 				return omod.GetWorldModelPath()
 			EndIf
 			index += 1
@@ -123,11 +163,102 @@ string Function GetMemberCustom(string member)
 		If (custom)
 			return custom+"."+member
 		Else
-			WriteLine(self, "GetMemberCustom: Could not get an instance for the "+member+" member.")
+			WriteLine(self, "GetMemberCustom : custom : Could not get an instance for the "+member+" member.")
 			return none
 		EndIf
 	Else
-		WriteLine(self, "GetMemberCustom: Argument member cannot be none or empty.")
+		WriteLine(self, "GetMemberCustom : member : Argument cannot be none or empty.")
+		return none
+	EndIf
+EndFunction
+
+
+; Open Event
+;---------------------------------------------
+
+Function SendOpenCloseEvent(OpenCloseEventArgs e)
+	If (e)
+		var[] arguments = new var[1]
+		arguments[0] = e
+		self.SendCustomEvent("OpenCloseEvent", arguments)
+	Else
+		WriteLine(self, "SendOpenCloseEvent : e : Cannot be none.")
+	EndIf
+EndFunction
+
+
+bool Function RegisterForOpenCloseEvent(ScriptObject script)
+	If (script)
+		script.RegisterForCustomEvent(self, "OpenCloseEvent")
+		return true
+	Else
+		WriteLine(self, "RegisterForOpenCloseEvent : script : Cannot register a none script for events.")
+		return false
+	EndIf
+EndFunction
+
+
+bool Function UnregisterForOpenCloseEvent(ScriptObject script)
+	If (script)
+		script.UnregisterForCustomEvent(self, "OpenCloseEvent")
+		return true
+	Else
+		WriteLine(self, "UnregisterForOpenCloseEvent : script : Cannot unregister a none script for events.")
+		return false
+	EndIf
+EndFunction
+
+
+OpenCloseEventArgs Function GetOpenCloseEventArgs(var[] arguments)
+	If (arguments)
+		return arguments[0] as OpenCloseEventArgs
+	Else
+		return none
+	EndIf
+EndFunction
+
+; Breath Event
+;---------------------------------------------
+
+Function SendBreathEvent(BreathEventArgs e)
+	If (e)
+		If (e.Breath == BreathInterrupted)
+			Interrupted = true
+		EndIf
+		var[] arguments = new var[1]
+		arguments[0] = e
+		self.SendCustomEvent("BreathEvent", arguments)
+	Else
+		WriteLine(self, "SendBreathEvent : e : Cannot be none.")
+	EndIf
+EndFunction
+
+
+bool Function RegisterForBreathEvent(ScriptObject script)
+	If (script)
+		script.RegisterForCustomEvent(self, "BreathEvent")
+		return true
+	Else
+		WriteLine(self, "RegisterForBreathEvent : script : Cannot register a none script for events.")
+		return false
+	EndIf
+EndFunction
+
+
+bool Function UnregisterForBreathEvent(ScriptObject script)
+	If (script)
+		script.UnregisterForCustomEvent(self, "BreathEvent")
+		return true
+	Else
+		WriteLine(self, "UnregisterForBreathEvent : script : Cannot unregister a none script for events.")
+		return false
+	EndIf
+EndFunction
+
+BreathEventArgs Function GetBreathEventArgs(var[] arguments)
+	If (arguments)
+		return arguments[0] as BreathEventArgs
+	Else
 		return none
 	EndIf
 EndFunction
@@ -145,16 +276,34 @@ EndFunction
 ;---------------------------------------------
 
 Group Properties
+	Keyword Property HasScope Auto Const Mandatory
+	{The keyword an OMOD must add via its property modifiers.}
+
 	string Property Name Hidden
 		string Function Get()
 			return "ScopeMenu"
 		EndFunction
 	EndProperty
+
 	string Property Instance Hidden
 		string Function Get()
 			return "root1.ScopeMenuInstance"
 		EndFunction
 	EndProperty
+
+	bool Property IsOpen Hidden
+		bool Function Get()
+			return UI.IsMenuOpen(Name)
+		EndFunction
+	EndProperty
+
+	Weapon Property Equipped Hidden
+		Weapon Function Get()
+			return Player.GetEquippedWeapon()
+		EndFunction
+	EndProperty
+
+	int Property Invalid = -1 AutoReadOnly
 EndGroup
 
 Group Identifiers
@@ -180,11 +329,32 @@ Group Identifiers
 	int Property Empty = 19 AutoReadOnly
 EndGroup
 
-Group Keyboard
-	int Property HoldBreath = 164 AutoReadOnly
+Group Breath
+	ActorValue Property ActionPoints Auto Const Mandatory
+
+	int Property BreathKey = 164 AutoReadOnly
+
+	int Property BreathHeld = 0 AutoReadOnly
+	int Property BreathReleased = 1 AutoReadOnly
+	int Property BreathInterrupted = 2 AutoReadOnly
+
+	bool Property IsBreathKeyDown Hidden
+		bool Function Get()
+			return BreathPressed
+		EndFunction
+	EndProperty
+
+	bool Property HasBreath Hidden
+		bool Function Get()
+			return Player.GetValue(ActionPoints) > 0
+		EndFunction
+	EndProperty
 EndGroup
 
-Group Keywords
-	Keyword Property HasScope Auto Const Mandatory
-	{The keyword an OMOD must add via its property modifiers.}
-EndGroup
+Struct OpenCloseEventArgs
+	bool Opening = false
+EndStruct
+
+Struct BreathEventArgs
+	int Breath = -1
+EndStruct

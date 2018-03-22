@@ -1,4 +1,4 @@
-Scriptname Fallout:ScopesTest:SampleScope extends Quest Default
+Scriptname Fallout:ScopesTest::SampleScope extends Quest
 import Fallout
 import Fallout:Scopes:Menu
 import Fallout:Scopes:Papyrus
@@ -6,17 +6,22 @@ import Fallout:Scopes:Papyrus
 Actor Player
 Scopes:Menu ScopeMenu
 
-
 ; Events
 ;---------------------------------------------
 
-Event OnInit()
+Event OnQuestInit()
 	Player = Game.GetPlayer()
 	OnGameReload()
 EndEvent
 
 
+Event OnQuestShutdown()
+	UnregisterForAllEvents()
+EndEvent
+
+
 Event Actor.OnPlayerLoadGame(Actor akSender)
+	UnregisterForAllEvents()
 	OnGameReload()
 EndEvent
 
@@ -24,38 +29,34 @@ EndEvent
 Function OnGameReload()
 	ScopeMenu = ScopeMenu()
 	If (ScopeMenu)
-		UnregisterForRemoteEvent(Player, "OnPlayerLoadGame")
-		RegisterForMenuOpenCloseEvent(ScopeMenu.Name)
+		ScopeMenu.RegisterForBreathEvent(self)
 		WriteLine(self, "Initialized")
 	Else
 		RegisterForRemoteEvent(Player, "OnPlayerLoadGame")
-		WriteLine(self, "Scope framework is not installed.")
+		Debug.Trace(self+" Scope framework is unavailable.")
 	EndIf
 EndFunction
 
 
-Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
-	If (Player.GetEquippedWeapon() == Revolver44)
-		If (abOpening)
-			RegisterForKey(ScopeMenu.HoldBreath)
+Event Fallout:Scopes:Menu.BreathEvent(Scopes:Menu sender, var[] arguments)
+	BreathEventArgs e = sender.GetBreathEventArgs(arguments)
+	If (sender.Equipped == Revolver44)
+		If (e.Breath == sender.Invalid)
+			WriteLine(self, "Fallout:Scopes:Menu.BreathEvent : Invalid")
+			return
+		ElseIf (e.Breath == sender.BreathHeld)
+			UI.Invoke(sender.Name, sender.GetMemberCustom("Steady"))
+		ElseIf (e.Breath == sender.BreathReleased)
+			UI.Invoke(sender.Name, sender.GetMemberCustom("Unsteady"))
+		ElseIf (e.Breath == sender.BreathInterrupted)
+			UI.Invoke(sender.Name, sender.GetMemberCustom("Unsteady"))
 		Else
-			UnregisterForKey(ScopeMenu.HoldBreath)
+			WriteLine(self, "Fallout:Scopes:Menu.BreathEvent : e.Breath : Unhandled Arguments "+e.Breath)
 		EndIf
+	Else
+		WriteLine(self, "Fallout:Scopes:Menu.BreathEvent : Event arguments are none.")
 	EndIf
 EndEvent
-
-
-Event OnKeyDown(int keyCode)
-	UI.Invoke(ScopeMenu.Name, ScopeMenu.GetMemberCustom("Steady"))
-	WriteLine(self, "Steady")
-EndEvent
-
-
-Event OnKeyUp(int keyCode, float time)
-	UI.Invoke(ScopeMenu.Name, ScopeMenu.GetMemberCustom("Unsteady"))
-	WriteLine(self, "Unsteady")
-EndEvent
-
 
 ; Properties
 ;---------------------------------------------
