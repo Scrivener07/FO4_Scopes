@@ -1,10 +1,6 @@
 # Fallout 4 Scopes
 A Fallout 4 framework for loading custom scopes and optics.
-
 Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuza2JnbikUS18Q) for work in progress footage.
-
-**Resources**: https://github.com/Scrivener07/FO4_Interface `FO4_1599712_1.9.4.0_Release_EN` `df2c1c6`
-
 
 #### Features
 * Framework allows all new scope and optic crosshairs for weapons. 
