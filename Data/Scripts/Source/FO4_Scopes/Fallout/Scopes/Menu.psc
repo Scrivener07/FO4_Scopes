@@ -90,13 +90,23 @@ string Function GetModelPath()
 		int index = 0
 		While (index < array.Length)
 			ObjectMod omod = array[index]
-			ObjectMod:PropertyModifier[] properties = omod.GetPropertyModifiers()
-			If (omod.HasWorldModel() && properties.FindStruct("object", HasScope) > Invalid)
+			If (omod.HasWorldModel() && IsScope(omod))
 				return omod.GetWorldModelPath()
 			EndIf
 			index += 1
 		EndWhile
 		return none
+	EndIf
+EndFunction
+
+
+bool Function IsScope(ObjectMod omod)
+	If (omod)
+		ObjectMod:PropertyModifier[] properties = omod.GetPropertyModifiers()
+		bool bHasScope = properties.FindStruct("object", HasScope) > Invalid
+		return bHasScope || properties.FindStruct("object", HasScopeRecon) > Invalid
+	Else
+		return false
 	EndIf
 EndFunction
 
@@ -276,6 +286,9 @@ EndFunction
 
 Group Properties
 	Keyword Property HasScope Auto Const Mandatory
+	{The keyword an OMOD must add via its property modifiers.}
+
+	Keyword Property HasScopeRecon  Auto Const Mandatory
 	{The keyword an OMOD must add via its property modifiers.}
 
 	string Property Name Hidden
