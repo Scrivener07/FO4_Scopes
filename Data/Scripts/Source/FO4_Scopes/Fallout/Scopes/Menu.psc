@@ -338,7 +338,9 @@ Group Identifiers
 	int Property AssaultRifle_REC = 16 AutoReadOnly
 	int Property GaussRiflePrototypeA = 17 AutoReadOnly
 	int Property GaussRiflePrototypeB = 18 AutoReadOnly
-	int Property Empty = 19 AutoReadOnly
+	int Property SolarCannon = 19 AutoReadOnly
+	int Property SolarCannonNight = 20 AutoReadOnly
+	int Property Empty = 21 AutoReadOnly
 EndGroup
 
 Group Breath
