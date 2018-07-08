@@ -5,6 +5,7 @@ Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuz
 [size=6]Requirements[/size]
 [list]
 [*]Requires a computer, PC only.
+[*]Requires the latest version of Fallout 4, version 1.10.98 (2893069).
 [*]Requires the latest version of F4SE.
 [/list]
 [size=6]Features[/size]
@@ -19,6 +20,11 @@ Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuz
 [*][url=https://www.nexusmods.com/fallout4/mods/26386/]Wattz Laser Gun by DeadPool2099, Ha_Ru, and friends..[/url]﻿
 [*][url=https://www.nexusmods.com/fallout4/mods/30868]LAER (Laser Assisted Electrical Rifle) by The Rizzler, Wanamingo, and friends..[/url]﻿
 [/list]
+[size=3]Coming Soon..[/size]
+[list]
+[*]Misriah Armory by NovaFinch
+[*]The Commonwealth Spartan by Brandon Potter
+[/list]
 [size=6]Installation[/size]
 [list]
 [*]Install with your preferred mod manager, or copy the files into your Fallout 4 data directory.
@@ -32,8 +38,8 @@ Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuz
 [/list]
 [size=6]Resources[/size]
 [list]
-[*]This framework make edits to [code]ScopeMenu.swf (Fallout4 - Interface.ba2)[/code] based on Fallout 4 version [code]1.10.50[/code], BuildID: [code]2564978[/code]
-[*]The source code in its entirety can be found on [url=https://github.com/Scrivener07/FO4_Scopes]GitHub.com[/url]﻿, under the permissive MIT license.
+[*]This framework make edits to [code]ScopeMenu.swf (Fallout4 - Interface.ba2)[/code] based on Fallout 4 version [code]1.10.98[/code]
+, BuildID: [code]2893069[/code][*]The source code in its entirety can be found on [url=https://github.com/Scrivener07/FO4_Scopes]GitHub.com[/url]﻿, under the permissive MIT license.
 [*]Visit [url=https://discord.gg/uhqu9ey]Scribes Discord[/url] for advanced technical support and discussions.
 [/list]
 
