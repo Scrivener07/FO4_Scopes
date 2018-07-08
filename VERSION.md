@@ -1,5 +1,5 @@
-- **BuildID:** Steam database build IDs are updated when a new "build" of an application is pushed.
-- **Version:** The current game version.
-- **Build:** The current game distribution.
-- **Language:** The current game language.
-- **Decompiler:** The decompiler name and version.
+- **BuildID:** [2893069](https://steamdb.info/patchnotes/2893069/)
+- **Version:** 1.10.98
+- **Build:** Release
+- **Language:** English
+- **Decompiler:** [FFDec v11.1.0](https://github.com/jindrapetrik/jpexs-decompiler/releases/tag/version11.1.0)
