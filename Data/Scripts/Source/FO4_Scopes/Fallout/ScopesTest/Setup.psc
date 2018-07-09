@@ -1,4 +1,4 @@
-Scriptname Fallout:ScopesTest:Setup extends Quest Const DebugOnly
+Scriptname Fallout:ScopesTest:Setup extends Quest DebugOnly
 {Temporary script to add in game items to test this project.}
 import Fallout:Scopes:Papyrus
 
