@@ -12,6 +12,15 @@ bool silent = true const
 Event OnQuestInit()
 	Player = Game.GetPlayer()
 
+	Player.AddItem(Ammo10mm, 600, silent)
+	Player.AddItem(Ammo308Caliber, 600, silent)
+	Player.AddItem(Ammo44, 600, silent)
+	Player.AddItem(Ammo45Caliber, 600, silent)
+	Player.AddItem(Ammo50Caliber, 600, silent)
+	Player.AddItem(Ammo556, 600, silent)
+	Player.AddItem(Ammo5mm, 600, silent)
+	Player.AddItem(AmmoShotgunShell, 600, silent)
+
 	Player.AddItem(LL_44_Pistol_Scoped, count, silent)
 	Player.AddItem(LL_HuntingRifle_Sniper, count, silent)
 	Player.AddItem(Aspiration_Weapon_Railroad_SniperRifle, count, silent)
@@ -72,6 +81,17 @@ Group Properties
 	LeveledItem Property LL_Weapons_Guns_Long Auto Const Mandatory
 	LeveledItem Property LL_Weapons_Guns_Short Auto Const Mandatory
 	LeveledItem Property LLI_Gunner_Sniper Auto Const Mandatory
+EndGroup
+
+Group Ammo
+	Ammo Property Ammo10mm Auto Const Mandatory
+	Ammo Property Ammo308Caliber Auto Const Mandatory
+	Ammo Property Ammo44 Auto Const Mandatory
+	Ammo Property Ammo45Caliber Auto Const Mandatory
+	Ammo Property Ammo50Caliber Auto Const Mandatory
+	Ammo Property Ammo556 Auto Const Mandatory
+	Ammo Property Ammo5mm Auto Const Mandatory
+	Ammo Property AmmoShotgunShell Auto Const Mandatory
 EndGroup
 
 Group Misriah
