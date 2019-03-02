@@ -7,6 +7,7 @@ package
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
+	import Shared.AS3.Utility;
 
 	public dynamic class OverlayLoader extends MovieClip
 	{
