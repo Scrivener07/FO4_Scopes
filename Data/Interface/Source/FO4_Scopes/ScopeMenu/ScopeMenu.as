@@ -5,9 +5,9 @@
 	import flash.events.IOErrorEvent;
 	import Shared.AS3.BSButtonHintBar;
 	import Shared.AS3.BSButtonHintData;
-	import Shared.AS3.Debug;
-	import Shared.AS3.Path;
 	import Shared.IMenu;
+	import System.Diagnostics.Debug;
+	import System.IO.Path;
 
 	public class ScopeMenu extends IMenu implements IScopeMenu
 	{

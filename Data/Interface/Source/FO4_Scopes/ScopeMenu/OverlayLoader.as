@@ -7,7 +7,7 @@ package
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
-	import Shared.AS3.Utility;
+	import System.Display;
 
 	public dynamic class OverlayLoader extends MovieClip
 	{
@@ -16,7 +16,7 @@ package
 
 		public function get Info() : LoaderInfo { return ContentLoader.contentLoaderInfo; }
 		public function get FilePath() : String { return ContentLoader.contentLoaderInfo.url; }
-		public function get Instance() : String { return Utility.WalkMovieFrom(Content, this); }
+		public function get Instance() : String { return Display.GetInstanceFrom(Content, this); }
 
 
 		// Initialize
