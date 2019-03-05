@@ -81,10 +81,10 @@
 		}
 
 
-		public function ConvertFileExtension(filepath:String, toExtension:String) : String
+		public function ConvertFileExtension(filepath:String, extension:String) : String
 		{
-			var converted = Path.ConvertFileExtension(filepath, toExtension);
-			Debug.WriteLine("ScopeMenu", "ConvertFileExtension", "Converting file path '"+filepath+"' to '"+toExtension+"' extension as '"+converted+"'.");
+			var converted = Path.ChangeExtension(filepath, extension);
+			Debug.WriteLine("ScopeMenu", "ConvertFileExtension", "Converting file path '"+filepath+"' to '"+extension+"' extension as '"+converted+"'.");
 			return converted;
 		}
 
