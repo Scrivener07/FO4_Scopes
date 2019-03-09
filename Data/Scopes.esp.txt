@@ -1,0 +1,8 @@
+MGEF
+  01006333 Fallout_Scopes_BreathEventEffect
+
+QUST
+  01000F99 Fallout_Scopes_Papyrus
+
+SPEL
+  01006331 Fallout_Scopes_BreathEvent
