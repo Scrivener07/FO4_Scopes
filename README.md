@@ -4,18 +4,18 @@
 A Fallout 4 framework for loading custom scopes and optics.
 Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuza2JnbikUS18Q) for work in progress footage.
 
-#### Features
+### Features
 * Framework allows all new scope and optic crosshairs for weapons. 
 * Easily create custom content. No data plugins, no scripts!
 * Optional advanced API for overlays to interact with Papyrus scripting.
 * "it just works" 😉
 
-#### Requirements
+### Requirements
 * Requires a computer, PC only.
 * Requires the latest version of Fallout 4.
 * Requires the latest version of F4SE.
 
-#### Installation
+### Installation
 * Install with your preferred mod manager, or copy the files into your Fallout 4 data directory.
 * Activate `Scopes.esm` anywhere within your load order.
 * Download and install mods that make use of this framework.
@@ -26,7 +26,7 @@ Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaj
 * [LAER (Laser Assisted Electrical Rifle)](https://www.nexusmods.com/fallout4/mods/30868)
 * [XM2010 Enhanced Sniper Rifle](https://www.nexusmods.com/fallout4/mods/36750)
 
-#### Acknowledgements
+### Acknowledgements
 Thanks to the F4SE team for their continued efforts to make mods like this possible.
 
 # Custom Content
@@ -35,7 +35,6 @@ This section is for modders who would like to create a custom scope overlay.
 The process is simple.
 Create a vector based image such as `.svg` or `.ai` for your scope overlay.
 Then import your vector image into new flash file (`.fla`), publish the `.swf` to a directory that matches a valid weapon scope object modification. Thats it!
-
 
 ## Notes
 With this system a single physical (`.nif`) representation of a scope is paired with a single visual (`.swf`) representation of a scope. A unquie resource identifier for the `.swf` file path is derived from the omod's world model path.
