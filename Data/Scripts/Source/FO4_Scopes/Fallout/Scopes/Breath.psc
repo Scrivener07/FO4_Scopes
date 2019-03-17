@@ -1,14 +1,15 @@
 ScriptName Fallout:Scopes:Breath extends ActiveMagicEffect
 import Fallout:Scopes:Menu
+import Fallout:Scopes:Client
 
 ; Events
 ;---------------------------------------------
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
-	If (ScopeMenu.IsOpen && ScopeMenu.IsBreathKeyDown)
+	If (Menu.IsOpen && Framework.IsBreathKeyDown)
 		BreathEventArgs e = new BreathEventArgs
-		e.Breath = ScopeMenu.BreathInterrupted
-		ScopeMenu.SendBreathEvent(e)
+		e.Breath = Framework.BreathInterrupted
+		Framework.SendBreathEvent(e)
 	EndIf
 EndEvent
 
@@ -17,5 +18,6 @@ EndEvent
 ;---------------------------------------------
 
 Group Properties
-	Fallout:Scopes:Menu Property ScopeMenu Auto Const Mandatory
+	Fallout:Scopes:Framework Property Framework Auto Const Mandatory
+	Fallout:Scopes:Menu Property Menu Auto Const Mandatory
 EndGroup
