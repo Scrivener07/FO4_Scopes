@@ -17,6 +17,8 @@ Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaj
 #### Installation
 * Install with your preferred mod manager, or copy the files into your Fallout 4 data directory.
 * Activate `Scopes.esm` anywhere within your load order.
+* Download and install mods that make use of this framework.
+* Launch the game.
 
 ### Mods
 * [Wattz Laser Gun](https://www.nexusmods.com/fallout4/mods/26386)
