@@ -12,6 +12,7 @@ Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaj
 
 #### Requirements
 * Requires a computer, PC only.
+* Requires the latest version of Fallout 4.
 * Requires the latest version of F4SE.
 
 #### Installation
