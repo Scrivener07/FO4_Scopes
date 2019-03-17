@@ -10,20 +10,21 @@ Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaj
 * Optional advanced API for overlays to interact with Papyrus scripting.
 * "it just works" 😉
 
-
-#### Installation
-* Install with your preferred mod manager, or copy the files into your Fallout 4 data directory.
-* Activate `Scopes.esp` anywhere within your load order.
-
-
 #### Requirements
 * Requires a computer, PC only.
 * Requires the latest version of F4SE.
 
+#### Installation
+* Install with your preferred mod manager, or copy the files into your Fallout 4 data directory.
+* Activate `Scopes.esm` anywhere within your load order.
+
+### Mods
+* [Wattz Laser Gun](https://www.nexusmods.com/fallout4/mods/26386)
+* [LAER (Laser Assisted Electrical Rifle)](https://www.nexusmods.com/fallout4/mods/30868)
+* [XM2010 Enhanced Sniper Rifle](https://www.nexusmods.com/fallout4/mods/36750)
 
 #### Acknowledgements
 Thanks to the F4SE team for their continued efforts to make mods like this possible.
-
 
 # Custom Content
 This section is for modders who would like to create a custom scope overlay.
