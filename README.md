@@ -5,9 +5,9 @@ A Fallout 4 framework for loading custom scopes and optics.
 Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuza2JnbikUS18Q) for work in progress footage.
 
 ### Features
-* Framework allows all new scope and optic crosshairs for weapons. 
+* Framework allows all new scope and optic crosshairs for weapons.
 * Easily create custom content. No data plugins, no scripts!
-* Optional advanced API for overlays to interact with Papyrus scripting.
+* Optional advanced API for scopes to interact with Papyrus scripting.
 * "it just works" 😉
 
 ### Requirements
@@ -29,7 +29,7 @@ Check out the [video playlist](https://www.youtube.com/playlist?list=PLdEgiq4kaj
 ### Acknowledgements
 Thanks to the F4SE team for their continued efforts to make mods like this possible.
 
-# Custom Content
+# Authors
 This section is for modders who would like to create a custom scope overlay.
 
 The process is simple.
@@ -39,10 +39,13 @@ Then import your vector image into new flash file (`.fla`), publish the `.swf` t
 ## Notes
 With this system a single physical (`.nif`) representation of a scope is paired with a single visual (`.swf`) representation of a scope. A unquie resource identifier for the `.swf` file path is derived from the omod's world model path.
 Your scope omod must also add the `HasScope` keyword to a weapon via its property modifiers.
-If your scope omod model is `Meshes\Weapons\44\44Scope.nif` then your scope overlay will be autoloaded from `Interface\Weapons\44\44Scope.swf`. 
+If your scope omod model is `Meshes\Weapons\44\44Scope.nif` then your scope overlay will be autoloaded from `Interface\Weapons\44\44Scope.swf`.
 
 * Adobe Illustrator
 * * Illustrator requires RGB color mode.
 * Adobe Flash (Adobe Animate)
 * * Document dimensions must be `1280x720` in size.
 * * Overlay must be centered on the stage.
+
+# Developers
+The AS3 source uses an external package from [UI Library {c37b191ae21e1a392850a736ed2b09263c577dee}](https://github.com/Scrivener07/FO4_Scripting/tree/c37b191ae21e1a392850a736ed2b09263c577dee/Data.UI.Library/Interface/Source/Fallout_Library)
