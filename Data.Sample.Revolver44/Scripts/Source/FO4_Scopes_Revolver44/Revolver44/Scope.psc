@@ -1,4 +1,4 @@
-Scriptname Fallout:ScopesTest:SampleScope extends Quest
+Scriptname Revolver44:Scope extends Quest
 import Fallout
 import Fallout:Scopes
 import Fallout:Scopes:Client

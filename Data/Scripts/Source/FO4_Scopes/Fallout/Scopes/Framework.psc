@@ -46,11 +46,8 @@ EndEvent
 
 Event OnMenuOpenCloseEvent(string menuName, bool opening)
 	BreathPressed = false
-
 	If (opening)
-		string overlay = Menu.ConvertFileExtension(File, "swf")
-		WriteLine(self, "OnMenuOpenCloseEvent: The converted overlay path is "+overlay)
-		Menu.SetCustom(overlay)
+		Menu.Load(File)
 		RegisterForKey(BreathKey)
 	Else
 		UnregisterForKey(BreathKey)

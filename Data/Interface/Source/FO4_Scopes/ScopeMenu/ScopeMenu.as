@@ -1,5 +1,6 @@
 ﻿package
 {
+	import Components.AssetLoader;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -7,17 +8,29 @@
 	import Shared.AS3.BSButtonHintData;
 	import Shared.IMenu;
 	import System.Diagnostics.Debug;
+	import System.Diagnostics.Utility;
 	import System.IO.Path;
+	import F4SE.Extensions;
 
 	public class ScopeMenu extends IMenu implements IScopeMenu
 	{
-		public var OverlayLoader_mc:OverlayLoader;
-		public var ButtonHintInstance:BSButtonHintBar;
+		// F4SE
+		protected var f4se:*;
 
+		// Loader
+		public var Controller:MovieClip;
+		private var Scope:ScopeLoader;
+		private var ScopeFrame:int = 0;
+		private const Name:String = "ScopeMenu";
+		private const MountID:String = "ScopeMenu_ImageMount";
+
+		// Client
+		private const ClientLoadedEvent:String = "ScopeMenu_ClientLoadedEvent";
+
+		// Buttons
+		public var ButtonHintInstance:BSButtonHintBar;
 		private var HoldBreathButton:BSButtonHintData;
 		private var HoldBreathButtonForVita:BSButtonHintData;
-
-		public var OverlayFrame:int = 0;
 
 
 		// Initialize
@@ -35,15 +48,84 @@
 			hints.push(HoldBreathButton);
 			hints.push(HoldBreathButtonForVita);
 			ButtonHintInstance.SetButtonHintData(hints);
-			Debug.WriteLine("[ScopeMenu]", "(Constructor)", "Constructed the scope menu.");
+
+			this.addEventListener(Event.ADDED_TO_STAGE, this.OnAddedToStage);
+			Debug.WriteLine("[ScopeMenu]", "(ctor)", "Constructed the scope menu.", this.loaderInfo.url);
+		}
+
+
+		private function OnAddedToStage(e:Event):void
+		{
+			F4SE.Extensions.API = MovieClip(root).f4se
+			Utility.TraceObject(F4SE.Extensions.GetVersion());
+			Scope = new ScopeLoader(Name, MountID);
+			Scope.addEventListener(AssetLoader.LOAD_COMPLETE, this.OnLoadComplete);
+			Scope.addEventListener(AssetLoader.LOAD_ERROR, this.OnLoadError);
+			Scope.visible = false;
+			Controller.addChild(Scope);
+			Debug.WriteLine("[ScopeMenu]", "(OnAddedToStage)");
+		}
+
+
+		// Events
+		//---------------------------------------------
+
+		private function OnLoadComplete(e:Event):void
+		{
+			gotoAndStop("Custom");
+			Scope.visible = true;
+			var client:String = GetClient();
+			Extensions.SendExternalEvent(ClientLoadedEvent, client);
+			Debug.WriteLine("[ScopeMenu]", "(OnLoadComplete)", "Scope found at '"+Scope.FilePath+"' with client instance of '"+client+"'.");
+		}
+
+
+		private function OnLoadError(e:IOErrorEvent):void
+		{
+			Scope.visible = false;
+			gotoAndStop(ScopeFrame);
+			Debug.WriteLine("[ScopeMenu]", "(OnLoadError)", "No scope found at '"+Scope.FilePath+"'. Moving to frame "+ScopeFrame);
 		}
 
 
 		// Methods
 		//---------------------------------------------
 
-		public function SetIsVita(isVita:Boolean) : *
+		//** Loads the given filepath as a scope overlay. */
+		public function Load(filePath:String):*
 		{
+			Debug.WriteLine("[ScopeMenu]", "(Load)", "Setting the scope file path to '"+filePath+"'.");
+			Scope.Load(filePath);
+		}
+
+
+		/**
+		 * Gets the instance variable to the loaded client scope overlay.
+		 */
+		public function GetClient():String
+		{
+			return Scope.GetInstance();
+		}
+
+		/**
+		 * Called by the game engine to set the scope overlay.
+		 * This value is derived from the ZoomData `Overlay` value, as seen in the Creation Kit.
+		 * @param identifier - The scope overlay identifier to use.
+		 */
+		public function SetOverlay(identifier:uint):*
+		{
+			Debug.WriteLine("[ScopeMenu]", "(SetOverlay)", "The overlay identifier is being set to "+identifier);
+			ScopeFrame = identifier + 1;
+			gotoAndStop(ScopeFrame);
+		}
+
+		/**
+		 * Called by the game engine to configure the button menu for compatibility with the Vita platform.
+		 * @param isVita - Use true to apply the Vita platform, use false to apply the PC platform.
+		 */
+		public function SetIsVita(isVita:Boolean):*
+		{
+			Debug.WriteLine("[ScopeMenu]", "(SetIsVita)", isVita);
 			if (isVita)
 			{
 				HoldBreathButton.ButtonVisible = false;
@@ -54,60 +136,6 @@
 				HoldBreathButton.ButtonVisible = true;
 				HoldBreathButtonForVita.ButtonVisible = false;
 			}
-			Debug.WriteLine("[ScopeMenu]", "(SetIsVita)", "The argument isVita equals "+isVita);
-		}
-
-
-		public function SetOverlay(identifier:uint) : *
-		{
-			OverlayFrame = identifier + 1;
-			gotoAndStop(OverlayFrame);
-			Debug.WriteLine("[ScopeMenu]", "(SetOverlay)", "The overlay identifier is being set to "+identifier);
-		}
-
-
-		public function SetCustom(filePath:String) : *
-		{
-			OverlayLoader_mc.Info.addEventListener(Event.COMPLETE, this.OnLoadComplete);
-			OverlayLoader_mc.Info.addEventListener(IOErrorEvent.IO_ERROR, this.OnLoadError);
-			OverlayLoader_mc.Load(filePath);
-			Debug.WriteLine("[ScopeMenu]", "(SetCustom)", "Setting the custom overlay file path to '"+filePath+"'.");
-		}
-
-
-		public function GetCustom() : String
-		{
-			Debug.WriteLine("[ScopeMenu]", "(GetCustom)", "Instance equals '"+OverlayLoader_mc.Instance+"'.");
-			return OverlayLoader_mc.Instance;
-		}
-
-
-		public function ConvertFileExtension(filepath:String, extension:String) : String
-		{
-			var converted = Path.ChangeExtension(filepath, extension);
-			Debug.WriteLine("[ScopeMenu]", "(ConvertFileExtension)", "Converting file path '"+filepath+"' to '"+extension+"' extension as '"+converted+"'.");
-			return converted;
-		}
-
-
-		// Events
-		//---------------------------------------------
-
-		private function OnLoadComplete(e:Event) : void
-		{
-			OverlayLoader_mc.Info.removeEventListener(Event.COMPLETE, this.OnLoadComplete);
-			OverlayLoader_mc.Info.removeEventListener(IOErrorEvent.IO_ERROR, this.OnLoadError);
-			gotoAndStop("Custom");
-			Debug.WriteLine("[ScopeMenu]", "(OnLoadComplete)", "Override found at '"+OverlayLoader_mc.FilePath+"' with instance of '"+OverlayLoader_mc.Instance+"'.");
-		}
-
-
-		private function OnLoadError(e:IOErrorEvent) : void
-		{
-			OverlayLoader_mc.Info.removeEventListener(Event.COMPLETE, this.OnLoadComplete);
-			OverlayLoader_mc.Info.removeEventListener(IOErrorEvent.IO_ERROR, this.OnLoadError);
-			gotoAndStop(OverlayFrame);
-			Debug.WriteLine("[ScopeMenu]", "(OnLoadError)", "No override found at '"+OverlayLoader_mc.FilePath+"'. Moving to frame "+OverlayFrame);
 		}
 
 

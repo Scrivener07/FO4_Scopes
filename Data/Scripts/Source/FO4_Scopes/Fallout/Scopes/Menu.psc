@@ -5,44 +5,40 @@ import Fallout:Scopes:Papyrus
 ; Methods
 ;---------------------------------------------
 
-string Function ConvertFileExtension(string filePath, string extension)
-	If (filePath)
-		If (extension)
-			var[] arguments = new var[2]
+bool Function Load(string filePath)
+	If (IsOpen)
+		If (filePath)
+			var[] arguments = new var[1]
 			arguments[0] = filePath
-			arguments[1] = extension
-			return UI.Invoke(Name, GetMember("ConvertFileExtension"), arguments)
+			UI.Invoke(Name, GetMember("Load"), arguments)
+			WriteLine(self, "Load", filePath)
+			return true
 		Else
-			WriteLine(self, "ConvertFileExtension: Argument `extension` cannot be none or empty.")
-			return none
+			WriteUnexpectedValue(self, "Load", "filepath", "The argument cannot be none or empty.")
+			return false
 		EndIf
 	Else
-		WriteLine(self, "ConvertFileExtension: Argument `filePath` cannot be none or empty.")
-		return none
+		WriteUnexpected(self, "Load", ToString()+" is not open.")
+		return false
 	EndIf
 EndFunction
 
 
-Function SetCustom(string filePath)
-	If (filePath)
-		var[] arguments = new var[1]
-		arguments[0] = filePath
-		UI.Invoke(Name, GetMember("SetCustom"), arguments)
-		WriteLine(self, "SetCustom:"+filePath)
+bool Function SetOverlay(int identifier)
+	If (IsOpen)
+		If (identifier >= Default && identifier <= Empty)
+			var[] arguments = new var[1]
+			arguments[0] = identifier
+			UI.Invoke(Name, GetMember("SetOverlay"), arguments)
+			WriteLine(self, "SetOverlay", identifier)
+			return true
+		Else
+			WriteUnexpectedValue(self, "SetOverlay", "identifier", "The value of "+identifier+" is out of range.")
+			return false
+		EndIf
 	Else
-		WriteLine(self, "SetCustom: Argument filePath cannot be none or empty.")
-	EndIf
-EndFunction
-
-
-Function SetOverlay(int identifier)
-	If (identifier >= Default && identifier <= Empty)
-		var[] arguments = new var[1]
-		arguments[0] = identifier
-		UI.Invoke(Name, GetMember("SetOverlay"), arguments)
-		WriteLine(self, "SetOverlay:"+identifier)
-	Else
-		WriteLine(self, "SetOverlay: Argument "+identifier+" is out of range.")
+		WriteUnexpected(self, "SetOverlay", ToString()+" is not open.")
+		return false
 	EndIf
 EndFunction
 
@@ -51,28 +47,33 @@ EndFunction
 ;---------------------------------------------
 
 string Function GetMember(string member)
-	If (member)
-		return Instance+"."+member
+	If (IsOpen)
+		If (member)
+			return Instance+"."+member
+		Else
+			WriteUnexpectedValue(self, "GetMember", "member", "The argument cannot be none or empty.")
+			return none
+		EndIf
 	Else
-		WriteLine(self, "GetMember: Argument member cannot be none or empty.")
+		WriteUnexpected(self, "GetMember", ToString()+" is not open.")
 		return none
 	EndIf
 EndFunction
 
 
-string Function GetMemberCustom(string member)
-	If (member)
-		string custom = UI.Invoke(Name, GetMember("GetCustom"))
-		If (custom)
-			return custom+"."+member
-		Else
-			WriteLine(self, "GetMemberCustom : custom : Could not get an instance for the "+member+" member.")
-			return none
-		EndIf
+string Function GetClient()
+	If (IsOpen)
+		return UI.Invoke(Name, GetMember("GetClient"))
 	Else
-		WriteLine(self, "GetMemberCustom : member : Argument cannot be none or empty.")
+		WriteUnexpected(self, "GetClient", ToString()+" is not open.")
 		return none
 	EndIf
+EndFunction
+
+
+string Function ToString()
+	{The string representation of this type.}
+	return "[Name:"+Name+", Path:"+Path+", Instance:"+Instance+"]"
 EndFunction
 
 
@@ -80,22 +81,37 @@ EndFunction
 ;---------------------------------------------
 
 Group Properties
-	; Scopes:Client Property Client Auto Const Mandatory
-
 	string Property Name Hidden
 		string Function Get()
+			{The name of this menu.}
 			return "ScopeMenu"
+		EndFunction
+	EndProperty
+
+	string Property Path Hidden
+		string Function Get()
+			{The swf file path of this menu without the file extension. The root directory is "Data\Interface".}
+			return "ScopeMenu"
+		EndFunction
+	EndProperty
+
+	string Property Root Hidden
+		string Function Get()
+			{The top-level MovieClip that is not the stage.}
+			return "root1"
 		EndFunction
 	EndProperty
 
 	string Property Instance Hidden
 		string Function Get()
-			return "root1.ScopeMenuInstance"
+			{The instance variable of this menu.}
+			return Root+".ScopeMenuInstance"
 		EndFunction
 	EndProperty
 
 	bool Property IsOpen Hidden
 		bool Function Get()
+			{Returns true if this menu is open.}
 			return UI.IsMenuOpen(Name)
 		EndFunction
 	EndProperty

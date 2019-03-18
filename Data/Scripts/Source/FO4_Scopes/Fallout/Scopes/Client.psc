@@ -4,6 +4,35 @@ import Fallout:Scopes
 import Fallout:Scopes:Papyrus
 
 
+; Methods
+;---------------------------------------------
+
+string Function GetMember(string member)
+	{Provides instance member path to the loaded client.}
+	If (member)
+		return Menu.GetClient()+"."+member
+	Else
+		WriteUnexpectedValue(self, "GetMember", "member", "The value cannot be none or empty.")
+		return ""
+	EndIf
+EndFunction
+
+
+var Function Get(string member)
+	return UI.Get(Menu.Name, GetMember(member))
+EndFunction
+
+
+bool Function Set(string member, var argument)
+	return UI.Set(Menu.Name, GetMember(member), argument)
+EndFunction
+
+
+var Function Invoke(string member, var[] arguments = none)
+	return UI.Invoke(Menu.Name, GetMember(member), arguments)
+EndFunction
+
+
 ; Open/Close Event
 ;---------------------------------------------
 
@@ -89,5 +118,5 @@ EndFunction
 ;---------------------------------------------
 
 Group Properties
-	Scopes:Framework Property Framework Auto Const Mandatory
+	Scopes:Menu Property Menu Auto Const Mandatory
 EndGroup
