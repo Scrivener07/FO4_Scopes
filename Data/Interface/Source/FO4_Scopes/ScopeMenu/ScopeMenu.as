@@ -12,7 +12,7 @@
 	import System.IO.Path;
 	import F4SE.Extensions;
 
-	public class ScopeMenu extends IMenu implements IScopeMenu
+	public class ScopeMenu extends IMenu implements IScopeMenu, F4SE.ICodeObject
 	{
 		// F4SE
 		protected var f4se:*;
@@ -56,14 +56,20 @@
 
 		private function OnAddedToStage(e:Event):void
 		{
-			F4SE.Extensions.API = MovieClip(root).f4se
-			Utility.TraceObject(F4SE.Extensions.GetVersion());
 			Scope = new ScopeLoader(Name, MountID);
 			Scope.addEventListener(AssetLoader.LOAD_COMPLETE, this.OnLoadComplete);
 			Scope.addEventListener(AssetLoader.LOAD_ERROR, this.OnLoadError);
 			Scope.visible = false;
 			Controller.addChild(Scope);
 			Debug.WriteLine("[ScopeMenu]", "(OnAddedToStage)");
+		}
+
+
+		public function onF4SEObjCreated(codeObject:*):void
+		{
+			F4SE.Extensions.API = codeObject;
+			Debug.WriteLine("[ScopeMenu]", "(onF4SEObjCreated)", codeObject);
+			Utility.TraceObject(codeObject);
 		}
 
 
@@ -106,6 +112,7 @@
 		{
 			return Scope.GetInstance();
 		}
+
 
 		/**
 		 * Called by the game engine to set the scope overlay.

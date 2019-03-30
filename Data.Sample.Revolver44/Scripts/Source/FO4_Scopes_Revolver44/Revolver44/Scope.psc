@@ -1,8 +1,5 @@
 Scriptname Revolver44:Scope extends Quest
-import Fallout
-import Fallout:Scopes
 import Fallout:Scopes:Client
-import Fallout:Scopes:Menu
 import Fallout:Scopes:Papyrus
 
 Actor Player
@@ -28,23 +25,35 @@ EndEvent
 
 
 Function OnGameReload()
+	Client.RegisterForOpenCloseEvent(self)
 	Client.RegisterForBreathEvent(self)
 	WriteLine(self, "Initialized")
 EndFunction
 
+Event Fallout:Scopes:Client.OpenCloseEvent(Fallout:Scopes:Client sender, var[] arguments)
+	If (Client.Equipped == Revolver44)
+		OpenCloseEventArgs e = sender.GetOpenCloseEventArgs(arguments)
+		If (e.Opening)
+			WriteLine(self, "Fallout:Scopes:Client.OpenCloseEvent", "Opening")
+		Else
+			WriteLine(self, "Fallout:Scopes:Client.OpenCloseEvent", "Closing")
+		EndIf
+	EndIf
+EndEvent
 
-Event Fallout:Scopes:Client.BreathEvent(Scopes:Client sender, var[] arguments)
-	BreathEventArgs e = sender.GetBreathEventArgs(arguments)
-	If (Framework.Equipped == Revolver44)
+
+Event Fallout:Scopes:Client.BreathEvent(Fallout:Scopes:Client sender, var[] arguments)
+	If (Client.Equipped == Revolver44)
+		BreathEventArgs e = sender.GetBreathEventArgs(arguments)
 		If (e.Breath == sender.Invalid)
 			WriteLine(self, "Fallout:Scopes:Client.BreathEvent", "Invalid")
 			return
-		ElseIf (e.Breath == Framework.BreathHeld)
-			UI.Invoke(Menu.Name, Menu.GetMemberCustom("Steady"))
-		ElseIf (e.Breath == Framework.BreathReleased)
-			UI.Invoke(Menu.Name, Menu.GetMemberCustom("Unsteady"))
-		ElseIf (e.Breath == Framework.BreathInterrupted)
-			UI.Invoke(Menu.Name, Menu.GetMemberCustom("Unsteady"))
+		ElseIf (e.Breath == Client.BreathHeld)
+			Client.Invoke("Steady")
+		ElseIf (e.Breath == Client.BreathReleased)
+			Client.Invoke("Unsteady")
+		ElseIf (e.Breath == Client.BreathInterrupted)
+			Client.Invoke("Unsteady")
 		Else
 			WriteUnexpectedValue(self, "Fallout:Scopes:Client.BreathEvent", "e.Breath", "Unhandled Arguments "+e.Breath)
 		EndIf
@@ -56,9 +65,7 @@ EndEvent
 ;---------------------------------------------
 
 Group Properties
-	Scopes:Framework Property Framework Auto Const Mandatory
-	Scopes:Menu Property Menu Auto Const Mandatory
-	Scopes:Client Property Client Auto Const Mandatory
+	Fallout:Scopes:Client Property Client Auto Const Mandatory
 	Weapon Property Revolver44 Auto Const Mandatory
 	{A .44 caliber revolver.}
 EndGroup

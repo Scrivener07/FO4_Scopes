@@ -124,15 +124,17 @@ EndFunction
 
 
 Function SendBreathEvent(BreathEventArgs e)
-	If (e)
-		If (e.Breath == BreathInterrupted)
-			Interrupted = true
+	If (Menu.IsOpen)
+		If (e)
+			If (e.Breath == BreathInterrupted)
+				Interrupted = true
+			EndIf
+			var[] arguments = new var[1]
+			arguments[0] = e
+			Client.SendCustomEvent("BreathEvent", arguments)
+		Else
+			WriteUnexpectedValue(self, "SendBreathEvent", "e", "The argument cannot be none.")
 		EndIf
-		var[] arguments = new var[1]
-		arguments[0] = e
-		Client.SendCustomEvent("BreathEvent", arguments)
-	Else
-		WriteUnexpectedValue(self, "SendBreathEvent", "e", "The argument cannot be none.")
 	EndIf
 EndFunction
 
@@ -151,22 +153,12 @@ Group Properties
 
 	Keyword Property HasScopeRecon  Auto Const Mandatory
 	{The keyword an OMOD must add via its property modifiers.}
-
-	Weapon Property Equipped Hidden
-		Weapon Function Get()
-			return Player.GetEquippedWeapon()
-		EndFunction
-	EndProperty
 EndGroup
 
 Group Breath
 	ActorValue Property ActionPoints Auto Const Mandatory
 
 	int Property BreathKey = 164 AutoReadOnly
-
-	int Property BreathHeld = 0 AutoReadOnly
-	int Property BreathReleased = 1 AutoReadOnly
-	int Property BreathInterrupted = 2 AutoReadOnly
 
 	bool Property IsBreathKeyDown Hidden
 		bool Function Get()

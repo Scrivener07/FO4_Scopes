@@ -46,3 +46,9 @@ Group Properties
 		EndFunction
 	EndProperty
 EndGroup
+
+Group Breath
+	int Property BreathHeld = 0 AutoReadOnly
+	int Property BreathReleased = 1 AutoReadOnly
+	int Property BreathInterrupted = 2 AutoReadOnly
+EndGroup

@@ -1,14 +1,25 @@
 Scriptname Fallout:Scopes:Client extends Fallout:Scopes:Type
+{The client API for scope overlay interactions.}
 import Fallout
 import Fallout:Scopes
 import Fallout:Scopes:Papyrus
+
+Actor Player
+
+
+; Events
+;---------------------------------------------
+
+Event OnQuestInit()
+	Player = Game.GetPlayer()
+EndEvent
 
 
 ; Methods
 ;---------------------------------------------
 
 string Function GetMember(string member)
-	{Provides instance member path to the loaded client.}
+	{Provides the instance member's variable path for the loaded client.}
 	If (member)
 		return Menu.GetClient()+"."+member
 	Else
@@ -19,16 +30,19 @@ EndFunction
 
 
 var Function Get(string member)
+	{Gets a client property member value. The return type must be cast.}
 	return UI.Get(Menu.Name, GetMember(member))
 EndFunction
 
 
 bool Function Set(string member, var argument)
+	{Sets a client property member with the given argument.}
 	return UI.Set(Menu.Name, GetMember(member), argument)
 EndFunction
 
 
 var Function Invoke(string member, var[] arguments = none)
+	{Invokes a client function member with the given arguments.}
 	return UI.Invoke(Menu.Name, GetMember(member), arguments)
 EndFunction
 
@@ -105,6 +119,7 @@ bool Function UnregisterForBreathEvent(ScriptObject script)
 	EndIf
 EndFunction
 
+
 BreathEventArgs Function GetBreathEventArgs(var[] arguments)
 	If (arguments)
 		return arguments[0] as BreathEventArgs
@@ -119,4 +134,12 @@ EndFunction
 
 Group Properties
 	Scopes:Menu Property Menu Auto Const Mandatory
+EndGroup
+
+Group Framework
+	Weapon Property Equipped Hidden
+		Weapon Function Get()
+			return Player.GetEquippedWeapon()
+		EndFunction
+	EndProperty
 EndGroup
