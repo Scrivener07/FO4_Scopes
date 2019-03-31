@@ -1,3 +1,8 @@
+# Scopes Framework
+# =========================
+/Build/
+/Release/
+
 # Bethesda Modding
 # =========================
 *.sublime-workspace
