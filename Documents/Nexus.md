@@ -2,9 +2,6 @@
 A framework for loading custom user interface crosshairs and optics while zoomed in with the scope menu.
 Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuza2JnbikUS18Q]video playlist[/url] for work in progress footage.
 
-A framework for loading custom user interface crosshairs and optics while zoomed in with the scope menu.
-Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuza2JnbikUS18Q]video playlist[/url] for work in progress footage.
-
 [size=6]Requirements[/size]
 [list]
 [*]Requires a computer, PC only.
