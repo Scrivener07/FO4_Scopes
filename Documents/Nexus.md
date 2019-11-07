@@ -19,13 +19,10 @@ Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuz
 [list]
 [*][url=https://www.nexusmods.com/fallout4/mods/26386/]Wattz Laser Gun by DeadPool2099, Ha_Ru, and friends..[/url]﻿
 [*][url=https://www.nexusmods.com/fallout4/mods/30868]LAER (Laser Assisted Electrical Rifle) by The Rizzler, Wanamingo, and friends..[/url]﻿
-[*][url=https://www.nexusmods.com/fallout4/mods/40409]MA37 ICWS and BR55 Service Rifle by Nova Soda, Scrivener, Darkman [/url]﻿
-[*][url=https://www.nexusmods.com/fallout4/mods/40907]FN FAL SA58 by Wanamingo, Fridock, Ha ru, Nova, Rsiyo, and BoneZone friends[/url]﻿
-[/list]
-[size=2]Coming Soon..[/size]
-[list]
-[*]Misriah Armory by NovaFinch
-[*]The Commonwealth Spartan by Brandon Potter
+[*][url=https://www.nexusmods.com/fallout4/mods/35032]BR77 by N7R[/url]﻿
+[*][url=https://www.nexusmods.com/fallout4/mods/39368]Misriah Armory by Nova, and friends...[/url]﻿
+[*][url=https://www.nexusmods.com/fallout4/mods/40409]MA37 ICWS and BR55 Service Rifle by Nova, Soda, Scrivener, and Darkman[/url]﻿
+[*][url=https://www.nexusmods.com/fallout4/mods/40907]FN FAL SA58 by Wanamingo, Fridock, Ha ru, Nova, Rsiyo, and the Bone Zone friends...[/url]﻿
 [/list]
 [size=6]Installation[/size]
 [list]
@@ -40,7 +37,7 @@ Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuz
 [/list]
 [size=6]Resources[/size]
 [list]
-[*]This framework make edits to [code]ScopeMenu.swf (Fallout4 - Interface.ba2)[/code] based on Fallout 4 version [code]1.10.98 (2893069)[/code]
+[*]This framework makes edits to [code]ScopeMenu.swf (Fallout4 - Interface.ba2)[/code] based on Fallout 4 version [code]1.10.98 (2893069)[/code]
 [*]The source code in its entirety can be found on [url=https://github.com/Scrivener07/FO4_Scopes]GitHub.com[/url]﻿, under the permissive MIT license.
 [*]Visit [url=https://discord.gg/uhqu9ey]Scribes Discord[/url] for advanced technical support and discussions.
 [/list]
