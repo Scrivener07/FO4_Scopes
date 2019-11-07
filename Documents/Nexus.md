@@ -2,6 +2,9 @@
 A framework for loading custom user interface crosshairs and optics while zoomed in with the scope menu.
 Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuza2JnbikUS18Q]video playlist[/url] for work in progress footage.
 
+A framework for loading custom user interface crosshairs and optics while zoomed in with the scope menu.
+Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuza2JnbikUS18Q]video playlist[/url] for work in progress footage.
+
 [size=6]Requirements[/size]
 [list]
 [*]Requires a computer, PC only.
@@ -19,6 +22,8 @@ Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuz
 [list]
 [*][url=https://www.nexusmods.com/fallout4/mods/26386/]Wattz Laser Gun by DeadPool2099, Ha_Ru, and friends..[/url]﻿
 [*][url=https://www.nexusmods.com/fallout4/mods/30868]LAER (Laser Assisted Electrical Rifle) by The Rizzler, Wanamingo, and friends..[/url]﻿
+[*][url=https://www.nexusmods.com/fallout4/mods/40409]MA37 ICWS and BR55 Service Rifle by Nova Soda, Scrivener, Darkman [/url]﻿
+[*][url=https://www.nexusmods.com/fallout4/mods/40907]FN FAL SA58 by Wanamingo, Fridock, Ha ru, Nova, Rsiyo, and BoneZone friends[/url]﻿
 [/list]
 [size=2]Coming Soon..[/size]
 [list]
