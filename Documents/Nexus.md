@@ -23,6 +23,7 @@ Check out the [url=https://www.youtube.com/playlist?list=PLdEgiq4kaju3CYBlhULuz
 [*][url=https://www.nexusmods.com/fallout4/mods/39368]Misriah Armory by Nova, and friends...[/url]﻿
 [*][url=https://www.nexusmods.com/fallout4/mods/40409]MA37 ICWS and BR55 Service Rifle by Nova, Soda, Scrivener, and Darkman[/url]﻿
 [*][url=https://www.nexusmods.com/fallout4/mods/40907]FN FAL SA58 by Wanamingo, Fridock, Ha ru, Nova, Rsiyo, and the Bone Zone friends...[/url]﻿
+[*][url=https://www.nexusmods.com/fallout4/mods/42283]Russian Assault Pack - SVD Dragunov - Saiga 12 - PP-19 Bizon - Stechkin APS - MP412 REX by Nova, i_code_i, and Darkman[/url]﻿
 [/list]
 [size=6]Installation[/size]
 [list]
